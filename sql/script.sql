@@ -1,4 +1,4 @@
-create database if not exists `ecommerce-store`;
+
 
 use `ecommerce-store`;
 

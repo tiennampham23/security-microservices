@@ -15,16 +15,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ProductController {
 	
 	// mock API
-	@GetMapping(value = "/products", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody List<Integer> getProducts() {
 		// TODO: find all products in database
 		return Arrays.asList(1,2);
 	}
 	
-	@RequestMapping("/product/{id}")
+	@RequestMapping("/view/{id}")
 	public @ResponseBody Integer getProductById(@PathVariable("id") int id) {
 		// TODO: find product by id
 		return 1;
+	}
+	
+	
+	@RequestMapping("/admin")
+	public String homeAdmin() {
+		return "This is the admin area of Gallery service running "; 
 	}
 	
 }
