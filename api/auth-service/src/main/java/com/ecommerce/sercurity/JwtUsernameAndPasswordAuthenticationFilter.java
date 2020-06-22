@@ -11,21 +11,31 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.ecommerce.model.JwtConfig;
+import com.ecommerce.model.UserModel;
+import com.ecommerce.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	// We use auth manager to validate the user credentials
 	private AuthenticationManager authManager;
 
@@ -46,7 +56,6 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 		try {
 			// 1. Get credentials from request
 			UserCredentials creds = new ObjectMapper().readValue(request.getInputStream(), UserCredentials.class);
-
 			// 2. Create auth object (contains credentials) which will be used by auth
 			// manager
 			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getUsername(),
@@ -66,7 +75,6 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 			Authentication auth) throws IOException, ServletException {
 		Long now = System.currentTimeMillis();
 		Long expiredDate = now + jwtConfig.getExpiration() * 1000;
-		System.out.println(expiredDate - now);
 		String token = Jwts.builder().setSubject(auth.getName())
 				// Convert to list of strings.
 				// This is important because it affects the way we get them back in the Gateway.
