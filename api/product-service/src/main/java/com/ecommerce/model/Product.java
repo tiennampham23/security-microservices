@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name = "product", schema = "dbo", catalog = "ecommerce-store")
+@Table(name = "product", schema = "dbo", catalog = "ecommercestore")
 public class Product implements Serializable {
 	private int id;
 	private String productName;
