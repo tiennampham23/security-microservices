@@ -41,6 +41,11 @@ public class UserController {
 		return response;
 	}
 	
+	@PostMapping(value = "/register-1", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE }, consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	public @ResponseBody List<Integer> register1(@RequestBody RegisterUserDTO user) {
+		return Arrays.asList(1, 2);
+	}
+	
 	@GetMapping(value = "/", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody List<Integer> getProducts() {
 		// TODO: find all products in database

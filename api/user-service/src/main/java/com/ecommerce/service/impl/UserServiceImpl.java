@@ -1,7 +1,6 @@
 package com.ecommerce.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.dto.RegisterUserDTO;
@@ -16,7 +15,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	
 	@Override
 	public int register(RegisterUserDTO registerUser) {
 		try {
@@ -26,7 +24,7 @@ public class UserServiceImpl implements UserService {
 			user.setAddress(registerUser.getAddress());
 			user.setFullName(registerUser.getFullName());
 			user.setPhone(registerUser.getPhone());
-			user.setPasswordHash(new BCryptPasswordEncoder().encode(registerUser.getPassword()));
+			user.setPasswordHash(registerUser.getPassword());
 			user.setRoleId(2);
 			userRepository.save(user);
 		} catch(Exception e) {
