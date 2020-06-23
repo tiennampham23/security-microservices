@@ -7,5 +7,5 @@ import com.ecommerce.model.UserModel;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Integer> {
-	
+
 }
