@@ -33,11 +33,13 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 				// allow all who are accessing register user
 				.antMatchers("/user/register/**").permitAll()
 				.antMatchers("/auth/register/**").permitAll()
+				.antMatchers("/get-current-user/**").permitAll()
 				// allow all who are accessing "auth" service
 				.antMatchers(jwtConfig.getUri()).permitAll()
 				// must be an admin if trying to access admin area (authentication is also
 				// required here)
-				.antMatchers("/products/admin/**").hasRole("ADMIN")
+				.antMatchers("/products/create/**").hasRole("ADMIN")
+				.antMatchers("/products/update/**").hasRole("ADMIN")
 				// Any other request must be authenticated
 				.anyRequest().authenticated();
 	}

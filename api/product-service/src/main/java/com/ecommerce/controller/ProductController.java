@@ -1,6 +1,7 @@
 package com.ecommerce.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,11 +29,24 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+	
+//	@Autowired
+//	private RestTemplate restTemplate;
 
 	@GetMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody ResponseDataDTO<List<Product>> getProducts() {
+	public @ResponseBody ResponseDataDTO<List<Product>> getProducts(@RequestHeader Map<String, String> headers) {
 		ResponseDataDTO<List<Product>> response = new ResponseDataDTO<>();
-
+//		headers.forEach((key, value) -> {
+//	        System.out.println(String.format("Header '%s' = %s", key, value));
+//	    });
+//		
+//		
+//		HttpHeaders rqHeaders = new HttpHeaders();
+//		rqHeaders.setContentType(MediaType.APPLICATION_JSON);
+//		rqHeaders.set("Authorization", headers.get("authorization"));
+//		HttpEntity<Object> entity = new HttpEntity<Object>("parameters", rqHeaders);
+//		ResponseEntity<String> res = restTemplate.exchange("http://localhost:8762/get-current-user", HttpMethod.GET, entity, String.class);
+//		System.out.println(res);
 		try {
 			List<Product> result = productService.getAll();
 			response.setData(result);
