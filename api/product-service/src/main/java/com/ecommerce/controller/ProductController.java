@@ -10,14 +10,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ecommerce.dto.ProductDTO;
 import com.ecommerce.model.Constants;
 import com.ecommerce.model.Product;
 import com.ecommerce.model.ResponseDataDTO;
@@ -96,9 +97,9 @@ public class ProductController {
 		return response;
 	}
 	
-	@PostMapping(value = "/create", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE }, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseDataDTO<Product> create(@RequestBody Product product) {
-		ResponseDataDTO<Product> response = new ResponseDataDTO<>();
+	@PostMapping(value = "/create", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public @ResponseBody ResponseDataDTO<Integer> createProduct(@ModelAttribute ProductDTO product) {
+		ResponseDataDTO<Integer> response = new ResponseDataDTO<>();
 		try {
 			response.setData(productService.create(product));
 			response.setCode(Constants.SUCCESS_CODE);
@@ -113,9 +114,9 @@ public class ProductController {
 		return response;
 	}
 	
-	@PutMapping(value = "/update/{id}", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE }, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseDataDTO<Product> update(@PathVariable("id") int id, @RequestBody Product product) {
-		ResponseDataDTO<Product> response = new ResponseDataDTO<>();
+	@PutMapping(value = "/update/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public @ResponseBody ResponseDataDTO<Integer> update(@PathVariable("id") int id, @ModelAttribute ProductDTO product) {
+		ResponseDataDTO<Integer> response = new ResponseDataDTO<>();
 		try {
 			response.setData(productService.update(product, id));
 			response.setCode(Constants.SUCCESS_CODE);

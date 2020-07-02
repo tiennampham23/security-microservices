@@ -4,4 +4,5 @@ import com.ecommerce.dto.RegisterUserDTO;
 
 public interface UserService {
 	int register(RegisterUserDTO user);
+	int getUserIdByUserName(String userName);
 }

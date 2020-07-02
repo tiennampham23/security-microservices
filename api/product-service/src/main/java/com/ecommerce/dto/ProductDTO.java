@@ -1,49 +1,43 @@
-package com.ecommerce.model;
+package com.ecommerce.dto;
 
-import java.io.Serializable;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
-@Entity
-@Table(name = "product", schema = "dbo", catalog = "ecommercestore")
-public class Product implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class ProductDTO {
+	private MultipartFile thumbnail;
 	private int id;
 	private String productName;
 	private String description;
-	private String thumbnail;
 	private float price;
 	private int amount;
 	private int categoryId;
 	private int supplierId;
 
-	public Product() {
+	public ProductDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Product(String productName, String description, String thumbnail, float price, int amount,
+	public ProductDTO(MultipartFile thumbnail, int id, String productName, String description, float price, int amount,
 			int categoryId, int supplierId) {
 		super();
+		this.thumbnail = thumbnail;
+		this.id = id;
 		this.productName = productName;
 		this.description = description;
-		this.thumbnail = thumbnail;
 		this.price = price;
 		this.amount = amount;
 		this.categoryId = categoryId;
 		this.supplierId = supplierId;
 	}
 
-	@Id
-	@Column(name = "id")
-	@TableGenerator(name = "gen_id", table = "HIBERNATE_GEN_ID", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VALUE", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "gen_id")
+	public MultipartFile getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(MultipartFile thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -52,7 +46,6 @@ public class Product implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "productname")
 	public String getProductName() {
 		return productName;
 	}
@@ -61,7 +54,6 @@ public class Product implements Serializable {
 		this.productName = productName;
 	}
 
-	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -70,16 +62,6 @@ public class Product implements Serializable {
 		this.description = description;
 	}
 
-	@Column(name = "thumbnail")
-	public String getThumbnail() {
-		return thumbnail;
-	}
-
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
-
-	@Column(name = "price")
 	public float getPrice() {
 		return price;
 	}
@@ -88,7 +70,6 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	@Column(name = "amount")
 	public int getAmount() {
 		return amount;
 	}
@@ -97,7 +78,6 @@ public class Product implements Serializable {
 		this.amount = amount;
 	}
 
-	@Column(name = "categoryid")
 	public int getCategoryId() {
 		return categoryId;
 	}
@@ -106,7 +86,6 @@ public class Product implements Serializable {
 		this.categoryId = categoryId;
 	}
 
-	@Column(name = "supplierid")
 	public int getSupplierId() {
 		return supplierId;
 	}
