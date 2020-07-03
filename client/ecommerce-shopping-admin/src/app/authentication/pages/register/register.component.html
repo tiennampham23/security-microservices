@@ -1,0 +1,104 @@
+<!--begin::Body-->
+<div class="kt-login__body">
+  <!--begin::Signin-->
+  <div class="kt-login__form">
+    <div class="kt-login__title">
+      <h3>{{ 'AUTH.REGISTER.TITLE' | translate }}</h3>
+    </div>
+
+    <form [formGroup]="registerForm" autocomplete="off" class="kt-login__form kt-form">
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Tên tài khoản</mat-label>
+          <input formControlName="username" matInput placeholder="Tên tài khoản" type="text"/>
+          <mat-error *ngIf="registerForm.get('username').hasError('required')">Tên tài khoản
+            <strong>bắt buộc</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Họ tên</mat-label>
+          <input formControlName="name" matInput placeholder="Họ tên" type="text"/>
+          <mat-error *ngIf="registerForm.get('name').hasError('required')">Họ và tên
+            <strong>bắt buộc</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Mật khẩu</mat-label>
+          <input autocomplete="off" formControlName="password" matInput placeholder="Mật khẩu" type="password"/>
+          <mat-error *ngIf="registerForm.get('password').hasError('required')">Mật khẩu
+            <strong>bắt buộc</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Xác nhận mật khẩu</mat-label>
+          <input formControlName="rePassword" matInput placeholder="Xác nhận mật khẩu" type="password"/>
+          <mat-error *ngIf="registerForm.get('rePassword').hasError('required')">Xác nhận mật khẩu
+            <strong>bắt buộc</strong>
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('rePassword').hasError('mustMatch')">Mật khẩu
+            <strong>không khớp</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input formControlName="email" matInput placeholder="email" type="email"/>
+          <mat-error *ngIf="registerForm.get('email').hasError('required')">Email
+            <strong>bắt buộc</strong>
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('email').hasError('pattern')">Email
+            <strong>sai định dạng</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <span matPrefix>(+84) </span>
+          <input matInput type="number" placeholder="Số điện thoại" formControlName="phone" />
+          <mat-error *ngIf="registerForm.get('phone').hasError('required')">Số điện thoại
+            <strong>bắt buộc</strong>
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('phone').hasError('pattern')">Số điện thoại
+            <strong>sai định dạng</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <textarea matInput type="text" placeholder="Mô tả" formControlName="description" rows="5"></textarea>
+          <mat-error *ngIf="registerForm.get('description').hasError('required')">Mô tả
+            <strong>bắt buộc</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-checkbox formControlName="agree" name="agree">
+          I agree the <a href="javascript:">terms & conditions</a>
+        </mat-checkbox>
+      </div>
+
+      <!--begin::Action-->
+      <div class="kt-login__actions">
+        <a class="kt-link kt-login__link-forgot" href="javascript:" routerLink="/auth/forgot-password">
+          {{ 'AUTH.GENERAL.FORGOT_BUTTON' | translate }}
+        </a>
+        <button [disabled]="loading" class="btn btn-secondary btn-elevate kt-login__btn-secondary" id="kt_login_signup_cancel"
+                routerLink="/auth/login">{{ 'AUTH.GENERAL.BACK_BUTTON' | translate }}</button>
+        <button (click)="submit()" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}"
+                class="btn btn-primary btn-elevate kt-login__btn-primary"
+                id="kt_login_signin_submit"
+                [disabled]="registerForm.invalid"
+        >{{ 'AUTH.GENERAL.SUBMIT_BUTTON' | translate }}
+        </button>
+      </div>
+      <!--end::Action-->
+    </form>
+  </div>
+</div>

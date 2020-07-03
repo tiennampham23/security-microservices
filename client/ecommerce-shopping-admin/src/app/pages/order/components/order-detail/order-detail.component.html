@@ -1,0 +1,86 @@
+<div class="kt-portlet"
+     [ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+  <div class="kt-portlet__head kt-portlet__head__custom">
+    <div class="kt-portlet__head-label">
+      <h3 class="kt-portlet__head-title">{{getTitle()}}</h3>
+    </div>
+  </div>
+  <div class="kt-form">
+    <div class="kt-portlet__body" *ngIf="orderDetail; let order">
+      <div class="kt-portlet__body-progress" *ngIf="!order">
+        <mat-spinner [diameter]="20"></mat-spinner>
+      </div>
+      <div class="form-group kt-form__group row">
+        <div class="col-lg-4 kt-margin-bottom-20-mobile">
+          <mat-label class="order-detail__label">ID:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.id}}</span>
+        </div>
+        <div class="col-lg-4 kt-margin-bottom-20-mobile">
+          <mat-label class="order-detail__label">Đơn vị vận chuyển:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.deliveryAgent}}</span>
+        </div>
+        <div class="col-lg-4 kt-margin-bottom-20-mobile">
+          <mat-label class="order-detail__label">Ngày tạo:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.createdAt | date: 'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+      <div class="form-group kt-form__group row">
+        <div class="col-lg-4 kt-margin-bottom-20-mobile">
+          <mat-label class="order-detail__label">Tài khoản:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.username}}</span>
+        </div>
+        <div class="col-lg-4 kt-margin-bottom-20-mobile">
+          <mat-label class="order-detail__label">Số lượng sản phẩm:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.listItem.length}}</span>
+        </div>
+        <div class="col-lg-4 kt-margin-bottom-20-mobile">
+          <mat-label class="order-detail__label">Trang thái:</mat-label>
+          <span
+            class="ml-1 kt-badge kt-badge--inline kt-badge--pill kt-badge--{{ getItemCssClassByStatus(order.status) }} kt-badge--wide">{{  order.status }}</span>
+        </div>
+      </div>
+      <div class="form-group kt-form__group row">
+        <div class="mat-table__wrapper">
+          <mat-table [dataSource]="order.listItem"
+                     class="lmat-elevation-z8">
+            <ng-container matColumnDef="Tên sản phẩm">
+              <mat-header-cell *matHeaderCellDef>Tên sản phẩm</mat-header-cell>
+              <mat-cell *matCellDef="let product">{{product.name}}</mat-cell>
+              <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="Số lượng">
+              <mat-header-cell *matHeaderCellDef>Số lượng</mat-header-cell>
+              <mat-cell *matCellDef="let product">{{product.number}}</mat-cell>
+              <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="Giá">
+              <mat-header-cell *matHeaderCellDef>Giá</mat-header-cell>
+              <mat-cell *matCellDef="let product">{{product.price | decimalFormat}}</mat-cell>
+              <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="Thành tiền">
+              <mat-header-cell *matHeaderCellDef>Thành tiền</mat-header-cell>
+              <mat-cell *matCellDef="let product">{{product.price * product.number | decimalFormat}}</mat-cell>
+              <mat-footer-cell *matFooterCellDef> Tổng: {{ calculateTotal() | decimalFormat }}</mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            <mat-footer-row class="sticky-footer" *matFooterRowDef="displayedColumns"></mat-footer-row>
+          </mat-table>
+        </div>
+      </div>
+    </div>
+    <div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit">
+      <div class="kt-form__actions kt-form__actions--solid">
+        <div class="row text-right">
+          <div class="col-lg-12">
+            <button type="button" mat-raised-button [mat-dialog-close]="null" cdkFocusInitial matTooltip="Hủy">
+              Hủy
+            </button>&nbsp;
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

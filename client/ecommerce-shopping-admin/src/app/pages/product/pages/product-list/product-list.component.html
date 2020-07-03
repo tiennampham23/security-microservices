@@ -1,0 +1,249 @@
+<app-portlet>
+
+  <app-portlet-header [class]="'kt-portlet__head--lg'" [sticky]="true" [title]="'Danh sách sản phẩm'"
+                      [viewLoading$]="dataSource.loading$">
+    <ng-container ktPortletTools>
+      <button [routerLink]="['create']" color="primary" mat-raised-button matTooltip="Create new product">Tạo mới sản
+        phẩm
+      </button>
+    </ng-container>
+  </app-portlet-header>
+  <!-- end::Header -->
+
+  <app-portlet-body>
+    <!-- start::FILTERS & GROUP ACTIONS -->
+    <div class="kt-form kt-margin-b-30">
+      <!-- start::FILTERS -->
+      <div class="kt-form__filtration">
+        <div class="row align-items-center">
+          <div class="col-md-4 kt-margin-bottom-10-mobile">
+            <mat-form-field class="w-100">
+              <label>
+                <input
+                  #searchInput
+                  [formControl]="keyword"
+                  class="mat-form-field mat-form-field-fluid"
+                  matInput
+                  placeholder="Tìm kiếm sản phẩm">
+              </label>
+              <mat-hint align="start">
+                <strong>Tìm kiếm</strong>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <!-- end::FILTERS -->
+
+      <!-- start::GROUP ACTIONS -->
+      <!-- Group actions list: 'Delete selected' | 'Fetch selected' | 'Update status for selected' -->
+      <!-- Group actions are shared for all LISTS | See '../../_shared' folder -->
+      <div [ngClass]="{'show' : selection.selected.length > 0}"
+           class="row align-items-center collapse kt-form__group-actions kt-margin-top-20 kt-margin-bottom-20">
+        <div class="col-xl-12">
+          <div class="kt-form__group kt-form__group--inline">
+            <div class="kt-form__label kt-form__label-no-wrap">
+              <label class="kt--font-bold kt-font-danger-">Selected records
+                count: {{ selection.selected.length }}</label>
+            </div>
+            <div class="kt-form__control kt-form__group--inline">
+              <button (click)="deleteProducts()" class="mat-button-mt-4" color="accent" mat-raised-button
+                      matTooltip="Delete selected products">
+                <mat-icon>delete</mat-icon>
+                Delete All
+              </button>&nbsp;<!-- Call 'delete-entity-dialog' from _shared folder -->
+              <button (click)="fetchProducts()" class="mat-button-mt-4" mat-raised-button
+                      matTooltip="Fetch selected products">
+                <mat-icon>clear_all</mat-icon>
+                Fetch Selected Records
+              </button>&nbsp;<!-- Call 'fetch-entity-dialog' from _shared folder -->
+              <button (click)="updateStatusForProducts()" class="mat-button-mt-4"
+                      mat-raised-button matTooltip="Update status for selected products">
+                <mat-icon>update</mat-icon>
+                Update status
+              </button><!-- Call 'update-stated-dialog' from _shared folder -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end::GROUP ACTIONS -->
+    </div>
+    <!-- end::FILTERS & GROUP ACTIONS -->
+
+    <!-- MATERIAL TABLE | Binded to datasources -->
+    <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+    <div class="mat-table__wrapper">
+      <!-- Checkbox Column -->
+      <!-- Table with selection -->
+      <!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+      <mat-table #table
+                 [dataSource]="dataSource"
+                 class="lmat-elevation-z8">
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef class="mat-column-checkbox">
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [color]="'primary'"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="mat-column-checkbox">
+            <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                          (click)="$event.stopPropagation()"
+                          [checked]="selection.isSelected(row)"
+                          [color]="'primary'">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+        <!--        <ng-container matColumnDef="id">-->
+        <!--          <mat-header-cell *matHeaderCellDef class="mat-column-vinCode">SKU</mat-header-cell>-->
+        <!--          <mat-cell *matCellDef="let product" class="mat-column-vinCode">{{product.id}}</mat-cell>-->
+        <!--        </ng-container>-->
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.name}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="code">
+          <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.code}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <mat-header-cell *matHeaderCellDef>Price(VND)</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.price | decimalFormat}} VND</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="avatar">
+          <mat-header-cell *matHeaderCellDef>Avatar</mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <img alt="avatar" class="img-fluid" src="{{product.avatar}}"/>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="totalNumber">
+          <mat-header-cell *matHeaderCellDef>TotalNumber</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.totalNumber | decimalFormat}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef>description</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.description}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="shippingFee">
+          <mat-header-cell *matHeaderCellDef>shippingFee(VND)</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.shippingFee | decimalFormat}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="weight">
+          <mat-header-cell *matHeaderCellDef>weight</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.weight | decimalFormat}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="imageLink">
+          <mat-header-cell *matHeaderCellDef>imageLink</mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <mat-select (selectionChange)="onGoToLink($event)" placeholder="Chọn link sản phẩm">
+              <mat-option *ngFor="let link of (product.imageLink | convertStringToArray)" [value]="link">
+                {{ link }}
+              </mat-option>
+            </mat-select>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="otherLink">
+          <mat-header-cell *matHeaderCellDef>otherLink</mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <mat-select (selectionChange)="onGoToLink($event)" placeholder="Chọn link bổ sung">
+              <mat-option *ngFor="let link of (product.otherLink | convertStringToArray)" [value]="link">
+                {{ link }}
+              </mat-option>
+            </mat-select>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="height">
+          <mat-header-cell *matHeaderCellDef>height</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.height | decimalFormat}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="width">
+          <mat-header-cell *matHeaderCellDef>width</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.width | decimalFormat}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>
+            Actions
+          </mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <button (click)="editProduct(product.id)" *ngIf="currentRole === 1" color="primary" mat-icon-button
+                    matTooltip="Edit product" type="button">
+              <a class="btn btn-icon btn-light btn-sm">
+                <span class="svg-icon svg-icon-md svg-icon-primary">
+                  <svg height="24px" version="1.1" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+                    <title>Stockholm-icons / General / Settings-1</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g fill="none" fill-rule="evenodd" id="Stockholm-icons-/-General-/-Settings-1" stroke="none" stroke-width="1">
+                        <rect height="24" id="bound" width="24" x="0" y="0"></rect>
+                        <path
+                          d="M7,3 L17,3 C19.209139,3 21,4.790861 21,7 C21,9.209139 19.209139,11 17,11 L7,11 C4.790861,11 3,9.209139 3,7 C3,4.790861 4.790861,3 7,3 Z M7,9 C8.1045695,9 9,8.1045695 9,7 C9,5.8954305 8.1045695,5 7,5 C5.8954305,5 5,5.8954305 5,7 C5,8.1045695 5.8954305,9 7,9 Z"
+                          fill="#000000" id="Combined-Shape"></path>
+                        <path
+                          d="M7,13 L17,13 C19.209139,13 21,14.790861 21,17 C21,19.209139 19.209139,21 17,21 L7,21 C4.790861,21 3,19.209139 3,17 C3,14.790861 4.790861,13 7,13 Z M17,19 C18.1045695,19 19,18.1045695 19,17 C19,15.8954305 18.1045695,15 17,15 C15.8954305,15 15,15.8954305 15,17 C15,18.1045695 15.8954305,19 17,19 Z"
+                          fill="#000000" id="Combined-Shape" opacity="0.3"></path>
+                    </g>
+                  </svg>
+                </span>
+              </a>
+            </button>&nbsp;
+            <button (click)="deleteProduct(product)" *ngIf="currentRole === 1" color="warn" mat-icon-button
+                    matTooltip="Delete product" type="button">
+<!--              <mat-icon>delete</mat-icon>-->
+              <a class="btn btn-icon btn-light btn-sm">
+                <span class="svg-icon svg-icon-md svg-icon-primary">
+                  <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+                    <title>Stockholm-icons / General / Trash</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="Stockholm-icons-/-General-/-Trash" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect id="bound" x="0" y="0" width="24" height="24"></rect>
+                        <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" id="round" fill="#000000" fill-rule="nonzero"></path>
+                        <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" id="Shape" fill="#000000" opacity="0.3"></path>
+                    </g>
+                  </svg>
+                </span>
+              </a>
+            </button>&nbsp;
+            <button [matMenuTriggerFor]="menu" mat-icon-button matTooltip="More actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item type="button">
+                <mat-icon>subject</mat-icon>
+                <span>Remarks</span>
+              </button>
+              <button mat-menu-item type="button">
+                <mat-icon>assignment</mat-icon>
+                <span>Specifications</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      <div *ngIf="!dataSource.hasItems" class="mat-table__message">No records found</div>
+    </div>
+
+    <!-- start: BOTTOM -->
+    <div class="mat-table__bottom">
+      <mat-spinner *ngIf="dataSource.loading$ | async" [diameter]="20"></mat-spinner>
+      <mat-paginator [length]="dataSource.paginatorTotal$ | async" [pageSizeOptions]="[3, 5, 10]" [pageSize]="10"
+                     [showFirstLastButtons]="true"></mat-paginator>
+    </div>
+    <!-- end: BOTTOM -->
+  </app-portlet-body>
+  <!-- end::Body -->
+</app-portlet>

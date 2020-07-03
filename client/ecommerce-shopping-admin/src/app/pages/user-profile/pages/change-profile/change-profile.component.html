@@ -1,0 +1,71 @@
+<app-portlet>
+  <app-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+    <ng-container ktPortletTools>
+      <a [routerLink]="'/dashboard'" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+         matTooltip="Back to the users list">
+        <i class="la la-arrow-left"></i>
+        <span>Quay lại</span>
+      </a>
+      <a class="btn btn-primary kt-margin-r-10"
+         color="primary"
+         mat-raised-button
+         matTooltip="Đổi thông tin người dùng"
+         [disabled]="userProfileFormGroup.invalid"
+         (click)="changeProfile()"
+      >
+        <span>Thay đổi thông tin</span>
+      </a>
+    </ng-container>
+  </app-portlet-header>
+
+  <app-portlet-body>
+    <form [formGroup]="userProfileFormGroup" class="kt-form kt-form--group-seperator-dashed">
+      <div class="kt-form__section kt-form__section--first">
+        <div class="form-group kt-form__group row">
+          <div class="col-lg-4 kt-margin-bottom-20-mobile">
+            <mat-form-field class="mat-form-field-fluid">
+              <input type="text" formControlName="name" matInput placeholder="Họ và tên" autocomplete="off"/>
+              <mat-error>Họ và tên
+                <strong>bắt buộc</strong>
+              </mat-error>
+              <mat-hint align="start">Vui lòng nhập
+                <strong>họ và tên</strong>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 kt-margin-bottom-20-mobile">
+            <mat-form-field class="mat-form-field-fluid">
+              <mat-label>Email</mat-label>
+              <input formControlName="email" matInput placeholder="email" type="email"/>
+              <mat-error *ngIf="userProfileFormGroup.get('email').hasError('required')">Email
+                <strong>bắt buộc</strong>
+              </mat-error>
+              <mat-error *ngIf="userProfileFormGroup.get('email').hasError('pattern')">Email
+                <strong>sai định dạng</strong>
+              </mat-error>
+              <mat-hint align="start">Vui lòng nhập
+                <strong>email</strong>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-4 kt-margin-bottom-20-mobile">
+            <mat-form-field class="mat-form-field-fluid">
+              <span matPrefix>(+84) </span>
+              <input matInput type="number" placeholder="Số điện thoại" formControlName="phone" />
+              <mat-error *ngIf="userProfileFormGroup.get('phone').hasError('required')">Số điện thoại
+                <strong>bắt buộc</strong>
+              </mat-error>
+              <mat-error *ngIf="userProfileFormGroup.get('phone').hasError('pattern')">Số điện thoại
+                <strong>sai định dạng</strong>
+              </mat-error>
+              <mat-hint align="start">Vui lòng nhập
+                <strong>số điện thoại</strong>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </app-portlet-body>
+</app-portlet>

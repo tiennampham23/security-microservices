@@ -1,0 +1,278 @@
+<app-portlet>
+  <app-portlet-header [class]="'kt-portlet__head--lg'" [sticky]="true" [title]="getComponentTitle()"
+                      [viewLoading$]="loading$">
+    <ng-container ktPortletTools>
+      <button class="btn btn-secondary kt-margin-r-10"
+              mat-raised-button matTooltip="Quay lại"
+              [routerLink]="'/product'"
+      >
+        <i class="la la-arrow-left"></i>
+        <span class="kt-hidden-mobile">Quay lại</span>
+      </button>
+      <button class="btn btn-primary kt-margin-r-10" color="primary" mat-raised-button
+         matTooltip="Lưu"
+          (click)="onSaveProduct()"
+      >
+        <span class="kt-hidden-mobile">Lưu</span>
+      </button>
+    </ng-container>
+  </app-portlet-header>
+  <app-portlet-body>
+    <form [formGroup]="productFormGroup" class="kt-form kt-form--group-seperator-dashed">
+      <div class="kt-form__section kt-form__section--first">
+        <div class="form__head-title">Thông tin sản phẩm</div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Tên sản phẩm(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <input formControlName="name" matInput placeholder="Nhập tên sản phẩm">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Mô tả sản phẩm(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <textarea formControlName="description" matInput placeholder="Nhập mô tả sản phẩm" rows="5"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Mã hàng hóa(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <input formControlName="code" matInput placeholder="Mã hàng hóa">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Thể loại(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <mat-select formControlName="categoryId">
+                  <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">ShippingFee(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <input formControlName="shippingFee" matInput placeholder="ShippingFee">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Khối lượng(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <span matSuffix>(gam)</span>
+                <input formControlName="weight" matInput placeholder="Khối lượng(gam)" type="number">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Chiều dài(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <span matSuffix>(cm)</span>
+                <input formControlName="height" matInput placeholder="Chiều dài(cm)" type="number">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Chiều rộng(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <span matSuffix>(cm)</span>
+                <input formControlName="width" matInput placeholder="Chiều rộng(cm)" type="number">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="form__head-title">Quản lý hình ảnh</div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Đường dẫn hình ảnh(*)
+            </mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile" formArrayName="imagesLink">
+              <mat-form-field *ngFor="let imageLink of imagesLinkFormArray.controls; let i = index;"
+                              class="mat-form-field-fluid" [formGroupName]="i">
+                <input formControlName="imageLink" matInput placeholder="Đường dẫn hình ảnh" type="text">
+              </mat-form-field>
+              <div (click)="addNewImageLink()" class="cursor-pointer font-weight-bold">
+                <span class="flaticon-add-circular-button"></span>
+                Thêm đường dẫn ảnh
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Đường dẫn khác(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile" formArrayName="othersLink">
+              <mat-form-field *ngFor="let otherLink of othersLinkFormArray.controls; let i = index;"
+                              class="mat-form-field-fluid" [formGroupName]="i">
+                <input formControlName="otherLink" matInput placeholder="Đường dẫn khác" type="text">
+              </mat-form-field>
+              <div (click)="addNewOtherLink()" class="cursor-pointer font-weight-bold">
+                <span class="flaticon-add-circular-button"></span>
+                Thêm đường dẫn khác
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Hình đại diện(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <div [ngStyle]="{background: 'url(' + previewImage + ')'}" class="uploader" id="file-upload-form">
+                <input
+                  (change)="changeImage($event)"
+                  accept="image/*"
+                  id="file-upload"
+                  type="file"
+                />
+                <label for="file-upload">
+                  <span *ngIf="!previewImage" class="flaticon-upload add-image"></span>
+                </label>
+                <span (click)="deleteImage()" *ngIf="previewImage" class="flaticon-delete delete-image"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form__head-title">Thông tin bán hàng</div>
+        <div class="kt-form__group" *ngIf="!isHasSubProducts">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Số lượng tồn kho(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <input formControlName="inventoryValue" matInput placeholder="Số lượng tồn kho" type="number">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="kt-form__group" *ngIf="!isHasSubProducts">
+          <div class="row">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Giá bán(*)</mat-label>
+            <div class="col-md-10 kt-margin-bottom-10-mobile">
+              <mat-form-field class="mat-form-field-fluid">
+                <span matSuffix> VNĐ</span>
+                <input formControlName="price" matInput placeholder="Giá bán" type="number">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="itemModalFormArray.controls.length < maxClassifyGroup" (click)="addClassifyGroup()" class="cursor-pointer p-3 font-weight-bold mt-2 text-center btn-add-classify-group">
+          <span class="flaticon-add-circular-button"></span>
+          Thêm nhóm phân loại
+        </div>
+        <div class="kt-form__group" formArrayName="itemModals" *ngIf="isHasSubProducts">
+          <div *ngFor="let itemModal of itemModalFormArray.controls; let i = index" class="row mt-2">
+            <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Nhóm phân
+              loại {{i + 1}}</mat-label>
+            <div [formGroupName]="i" class="col-md-10 kt-margin-bottom-10-mobile p-2" style="border: 1px dashed gray;">
+              <mat-form-field class="mat-form-field-fluid">
+                <span (click)="removeClassifyGroup(i)" class="flaticon-close cursor-pointer" matSuffix></span>
+                <input formControlName="classifyName" matInput placeholder="Tên nhóm phân loại" type="text">
+              </mat-form-field>
+              <div class="mb-3" formArrayName="classifyValues">
+                <mat-form-field *ngFor="let property of itemModal.get('classifyValues').controls let j = index;"
+                                [formGroupName]="j" class="mat-form-field-fluid">
+                  <input formControlName="value" matInput placeholder="Phân loại hàng {{j+1}}" type="text">
+                  <span (click)="removeClassifyValue(itemModal?.controls['classifyValues'], j, i)"
+                        class="flaticon-delete cursor-pointer" matSuffix
+                  ></span>
+                </mat-form-field>
+                <div (click)="addClassifyValue(itemModal?.controls['classifyValues'], i)" class="cursor-pointer font-weight-bold">
+                  <span class="flaticon-add-circular-button"></span>
+                  Thêm phân loại hàng
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="kt-form__group" *ngIf="isHasSubProducts">
+      <div class="row">
+        <table *ngIf="!isSingleProperty" class="table__input">
+          <thead>
+          <tr>
+            <th scope="col" *ngFor="let column of displayedColumns">{{column}}</th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let fProperty of firstPropertyValues; let i = index">
+          <tr *ngFor="let sProperty of secondPropertyValues; let j = index">
+            <th [attr.rowspan]="secondPropertyValues.length" scope="rowgroup" *ngIf="j === 0">{{fProperty.value}}</th>
+            <th scope="row">{{sProperty.value}}</th>
+            <th>
+              <label>
+                <input [(ngModel)]="values[i][j].amount" type="number"/>
+              </label>
+            </th>
+            <th>
+              <label>
+                <input [(ngModel)]="values[i][j].price" type="number"/>
+              </label>
+            </th>
+            <th>
+              <label>
+                <input [(ngModel)]="values[i][j].sku" type="text"/>
+              </label>
+            </th>
+          </tr>
+          </tbody>
+        </table>
+
+        <table *ngIf="isSingleProperty" class="table__input">
+          <thead>
+          <tr>
+            <th scope="col" *ngFor="let column of displayedColumns">{{column}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let fProperty of firstPropertyValues; let j = index">
+            <th scope="row">{{fProperty.value}}</th>
+            <th>
+              <label>
+                <input [(ngModel)]="values[j].amount" type="number"/>
+              </label>
+            </th>
+            <th>
+              <label>
+                <input [(ngModel)]="values[j].price" type="number"/>
+              </label>
+            </th>
+            <th>
+              <label>
+                <input [(ngModel)]="values[j].sku" type="text"/>
+              </label>
+            </th>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        {{values | json}}
+      </div>
+    </div>
+  </app-portlet-body>
+</app-portlet>

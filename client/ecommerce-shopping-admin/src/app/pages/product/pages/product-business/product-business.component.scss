@@ -1,0 +1,85 @@
+:host {
+  ::ng-deep .mat-form-field-flex {
+    border: 1px solid #0000001a;
+    padding: 10px;
+  }
+  .product__description {
+    display: flex;
+  }
+  .form__head-title {
+    margin-top: 10px;
+    padding: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #48465b;
+  }
+
+  .uploader {
+    border: 2px dashed #dddfe2;
+    border-radius: 2px;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 150px;
+    min-width: 150px;
+    position: relative;
+    width: auto;
+
+    background-repeat: no-repeat!important;
+    background-size: 100%!important;;
+    background-position: center!important;;
+
+    input[type='file'] {
+      display: none;
+    }
+
+    .add-image, .delete-image {
+      position: absolute;
+      font-size: 28px;
+      color: #dedede;
+      z-index: 2;
+      margin: 0 auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      &:hover {
+        color: #b9b9b9;
+      }
+    }
+    .delete-image {
+      &:hover {
+        color: #ff00009e;
+      }
+    }
+  }
+
+  .btn-add-classify-group {
+    border: 2px dashed #dddfe2;
+    &:hover {
+      background: gainsboro;
+    }
+  }
+  table.table__input {
+    width: 100%;
+
+    th, td{
+      text-align: center;
+      border: 1px solid #CCC;
+      padding: 0 !important;
+    }
+
+    th {
+      input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        text-align: center;
+        border-bottom: 1px solid #80808000;
+      }
+    }
+
+    tr {
+      height: 60px;
+    }
+  }
+}

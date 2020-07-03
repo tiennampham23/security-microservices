@@ -15,4 +15,6 @@ public interface ProductService {
 	Optional<Product> getProductById(int id);
 	int create(ProductDTO product);
 	int update(ProductDTO product, int id);
+	List<Product> getProductsByCategoryId(String categoryId);
+	List<Product> getProductsBySupplierId(String supplierId);
 }

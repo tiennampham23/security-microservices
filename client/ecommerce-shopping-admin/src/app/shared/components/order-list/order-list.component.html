@@ -1,0 +1,216 @@
+<app-portlet [class]="portletClass">
+  <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+  <app-portlet-header [class]="'kt-portlet__head--lg'" [sticky]="true" [title]="'Danh sách đơn hàng'"
+                      [viewLoading$]="dataSource.loading$">
+    <ng-container ktPortletTools>
+      <button (click)="onRedirectOrder()" *ngIf="currentRole === 2" color="primary" mat-raised-button
+              matTooltip="Create new product">New order
+      </button>
+    </ng-container>
+  </app-portlet-header>
+  <!-- end::Header -->
+
+  <app-portlet-body>
+    <!-- start::FILTERS & GROUP ACTIONS -->
+    <div [formGroup]="searchOrderFormGroup" class="kt-form kt-margin-b-30">
+      <!-- start::FILTERS -->
+      <div class="kt-form__filtration">
+        <div class="row align-items-center">
+
+          <div class="col-md-2 kt-margin-bottom-10-mobile">
+            <!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+            <div class="kt-form__control">
+              <mat-form-field class="mat-form-field-fluid">
+                <mat-select formControlName="status" placeholder="Trạng thái">
+                  <mat-option *ngFor="let status of listStatus" [value]="status.id"
+                  >{{ status.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-md-2 kt-margin-bottom-10-mobile">
+            <mat-form-field class="mat-form-field-fluid">
+              <label>
+                <input #searchInput formControlName="keywords" matInput placeholder="Tìm kiếm từ khóa">
+              </label>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2 kt-margin-bottom-10-mobile">
+            <mat-form-field class="mat-form-field-fluid">
+              <input [matDatepicker]="startDate" formControlName="startDate" matInput placeholder="Từ ngày">
+              <mat-datepicker-toggle [for]="startDate" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #startDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2 kt-margin-bottom-10-mobile">
+            <mat-form-field class="mat-form-field-fluid">
+              <input [matDatepicker]="toDate" formControlName="endDate" matInput placeholder="Đến ngày">
+              <mat-datepicker-toggle [for]="toDate" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #toDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2 kt-margin-bottom-10-mobile">
+            <button (click)="onSearchOrders()" color="primary" mat-button mat-flat-button>Tìm kiếm</button>
+          </div>
+        </div>
+      </div>
+      <!-- end::FILTERS -->
+
+      <div [ngClass]="{'show' : selection.selected.length > 0}"
+           class="row align-items-center collapse kt-form__group-actions kt-margin-top-20 kt-margin-bottom-20">
+        <!-- We show 'Group Actions' div if smth are selected -->
+        <div class="col-xl-12">
+          <div class="kt-form__group kt-form__group--inline">
+            <div class="kt-form__label kt-form__label-no-wrap">
+              <label class="kt--font-bold kt-font-danger-">
+                Phần đã đã chọn: {{ selection.selected.length }}
+              </label>
+            </div>
+            <div class="kt-form__control kt-form__group--inline">
+              <button (click)="onUpdateStatusOrders()"
+                      class="mat-button-mt-4"
+                      mat-raised-button matTooltip="Cập nhập trạng thái">
+                <mat-icon>update</mat-icon>
+                Cập nhập trạng thái
+              </button>
+              <button (click)="onDownloadOrderPDF()"
+                      color="primary"
+                      class="mat-button-mt-4 ml-2"
+                      mat-raised-button matTooltip="Tải file orders">
+                <mat-icon>cloud_download</mat-icon>
+                Tải file orders
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end::GROUP ACTIONS -->
+    </div>
+    <!-- end::FILTERS & GROUP ACTIONS -->
+
+    <!-- MATERIAL TABLE | Binded to datasources -->
+    <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+    <div class="mat-table__wrapper">
+      <mat-table #sort1="matSort"
+                 #table
+                 [dataSource]="dataSource"
+                 class="lmat-elevation-z8"
+                 matSort
+                 matSortActive="createdAt"
+                 matSortDirection="asc"
+                 matSortDisableClear>
+        <!-- Checkbox Column -->
+
+        <!-- Table with selection -->
+        <!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef class="mat-column-checkbox">
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [color]="'primary'"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row" class="mat-column-checkbox">
+            <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                          (click)="$event.stopPropagation()"
+                          [checked]="selection.isSelected(row)"
+                          [color]="'primary'">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+<!--        <ng-container matColumnDef="id">-->
+<!--          &lt;!&ndash; ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview &ndash;&gt;-->
+<!--          <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let order">{{order.id}}</mat-cell>-->
+<!--        </ng-container>-->
+
+        <ng-container matColumnDef="code">
+          <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.code}}</mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="username">
+          <mat-header-cell *matHeaderCellDef>User Name</mat-header-cell>
+          <mat-cell *matCellDef="let order">
+            <span class="kt-link">{{order.username}}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryAgent">
+          <mat-header-cell *matHeaderCellDef>Delivery Agent</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.deliveryAgent}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="statusName">
+          <mat-header-cell *matHeaderCellDef>statusName</mat-header-cell>
+          <mat-cell *matCellDef="let order">
+            <span
+              class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{ getItemCssClassByStatus(order.statusName) }} kt-badge--wide">{{  order.statusName }}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryCode">
+          <mat-header-cell *matHeaderCellDef>deliveryCode</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.deliveryCode}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="totalValue">
+          <mat-header-cell *matHeaderCellDef>Total Value</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.totalValue | decimalFormat}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="createdAt">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>createdAt</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.createdAt | date: 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-cell *matCellDef="let order">
+            <button [matMenuTriggerFor]="menu" mat-icon-button matTooltip="More actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button (click)="onViewOrderDetail(order)" mat-menu-item>
+                <mat-icon>view_list</mat-icon>
+                <span>Chi tiết giao dịch</span>
+              </button>
+              <button
+                (click)="onChangeOrderStatus(order)"
+                *ngIf="(currentRole === 2 && (order?.statusName === 'Đang chờ'
+                  || order?.statusName === 'Huỷ'))
+                  || (currentRole === 1 && order?.statusName !== 'Huỷ')"
+                mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Cập nhập trạng thái</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      <!-- Message for empty data  -->
+      <div *ngIf="!dataSource.hasItems" class="mat-table__message">
+        Không có dữ liệu
+      </div>
+    </div>
+
+    <!-- start: BOTTOM -->
+    <div class="mat-table__bottom">
+      <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+      <mat-spinner *ngIf="dataSource.loading$ | async" [diameter]="20"></mat-spinner>
+      <!-- MATERIAL PAGINATOR | Binded to dasources -->
+      <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+      <mat-paginator [length]="dataSource.paginatorTotal$ | async" [pageSizeOptions]="[1, 3, 5, 10]" [pageSize]="1"
+                     [showFirstLastButtons]="true"></mat-paginator>
+    </div>
+    <!-- end: BOTTOM -->
+  </app-portlet-body>
+  <!-- end::Body -->
+
+</app-portlet>

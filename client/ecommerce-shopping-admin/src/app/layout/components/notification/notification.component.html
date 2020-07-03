@@ -1,0 +1,54 @@
+<div autoClose="outside" class="kt-header__topbar-item" ngbDropdown placement="bottom">
+  <div class="kt-header__topbar-wrapper" ngbDropdownToggle>
+		<span
+      [ngClass]="{'kt-pulse kt-pulse--brand': pulse, 'kt-pulse--light' : pulseLight, 'kt-header__topbar-icon--success' : iconType === 'success'	}"
+      class="kt-header__topbar-icon">
+			<i *ngIf="!useSVG" [ngClass]="icon"></i>
+			<span *ngIf="useSVG" [inlineSVG]="icon" [ngClass]="{'kt-svg-icon--success' : iconType === 'success'}"
+            class="kt-svg-icon"></span>
+			<span [hidden]="!pulse" class="kt-pulse__ring"></span>
+		</span>
+    <span [hidden]="!dot" class="kt-badge kt-badge--dot kt-badge--notify kt-badge--sm kt-badge--brand"></span>
+  </div>
+
+  <div
+    class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg"
+    ngbDropdownMenu>
+    <form>
+      <!--begin: Head -->
+      <div [ngStyle]="{'background-image': backGroundStyle() }"
+           class="kt-head kt-head--skin-{{skin}} kt-head--fit-x kt-head--fit-b">
+        <h3 class="kt-head__title">
+          Danh sách thông báo
+          <span *ngIf="unreadNotifications" class="btn btn-{{ type }} btn-sm btn-bold btn-font-md">{{unreadNotifications}}</span>
+        </h3>
+      </div>
+      <!--end: Head -->
+
+      <div>
+        <div [ngStyle]="{'position': 'relative'}"
+             class="kt-notification kt-margin-t-10 kt-margin-b-10">
+          <div *ngFor="let notification of notifications" class="kt-notification__item cursor-pointer">
+            <div class="kt-notification__item-icon">
+              <i class="flaticon2-notification kt-font-danger"></i>
+            </div>
+            <div class="kt-notification__item-details cursor-pointer" (click)="onGotoNotificationDetail(notification)">
+              <div class="kt-notification__item-title">
+                {{ notification.title }}
+              </div>
+              <div class="kt-notification__item-time">
+                {{notification.createdAt | date: 'dd/MM/yyyy'}}
+              </div>
+            </div>
+          </div>
+          <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" style="left: 0px; width: 0px;" tabindex="0"></div>
+          </div>
+          <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" style="top: 0px; height: 0px;" tabindex="0"></div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

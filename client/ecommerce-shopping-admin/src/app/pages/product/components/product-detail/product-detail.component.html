@@ -1,0 +1,170 @@
+<app-portlet>
+  <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+  <app-portlet-header [class]="'kt-portlet__head--lg'" [viewLoading$]="viewLoading">
+    <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+
+    <ng-container ktPortletTitle>
+      <h3 class="kt-portlet__head-title">
+        <span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">Danh sách giao dịch</span>
+      </h3>
+      <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+      <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+    </ng-container>
+  </app-portlet-header>
+  <!-- end::Header -->
+
+  <app-portlet-body>
+    <div class="wrapper row" *ngIf="productDetail">
+      <div class="preview col-md-6">
+        <div class="preview-pic tab-content">
+          <div class="tab-pane active" id="pic-1"><img [src]="productDetail?.avatar" alt=""/></div>
+        </div>
+      </div>
+      <div class="details col-md-6">
+        <div class="flex">
+          <div class="flex flex-column">
+            <div
+              class="flex items-center"
+              style="margin-bottom: 8px; align-items: baseline;"
+            >
+              <label class="property__name">Tên sản phẩm</label>
+              <div class="flex items-center product__name">
+                {{
+                  productDetail.itemName
+                }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="flex flex-column">
+            <div
+              class="flex items-center"
+              style="margin-bottom: 8px; align-items: baseline;"
+            >
+              <label class="property__name">Gía bán</label>
+              <div class="flex items-center">
+                <span *ngIf="currentPrice <= 0" class="product__price">{{
+                  productDetail.inventoryValue
+                  }}</span>
+                <span *ngIf="currentPrice > 0" class="product__price">
+                  {{currentPrice}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="flex flex-column">
+            <div
+              class="flex items-center"
+              style="margin-bottom: 8px; align-items: baseline;"
+            >
+              <label class="property__name">Hình ảnh</label>
+              <div class="flex items-center">
+                <button class="product-variation" *ngFor="let image of imagesLink; let i = index" (click)="onGoToUrl(image)">
+                  Link {{i + 1}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="flex flex-column">
+            <div
+              class="flex items-center"
+              style="margin-bottom: 8px; align-items: baseline;"
+            >
+              <label class="property__name">Đường dẫn khác</label>
+              <div class="flex items-center">
+                <button class="product-variation" *ngFor="let other of othersLink; let i = index" (click)="onGoToUrl(other)">
+                  Link {{i + 1}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex" *ngFor="let property of productDetail?.properties; let i = index">
+          <div class="flex flex-column">
+            <div
+              class="flex items-center"
+              style="margin-bottom: 8px; align-items: baseline;"
+            >
+              <label class="property__name">{{property.propertyName}}</label>
+              <div class="flex items-center">
+                <button (click)="onChooseProperty(property, value, i, j)"
+                        class="product-variation"
+                        [ngClass]="{'product-highlight': isSelectedHighlight[i][j] === true}"
+                        *ngFor="let value of property.value; let j = index">
+                  {{value}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex">
+          <div class="flex flex-column">
+            <div
+              class="flex items-center"
+              style="margin-bottom: 8px; align-items: baseline;"
+            >
+              <label class="property__name">Số lượng:</label>
+              <div class="flex items-center form-group">
+                <input class="form-control" [formControl]="amountProduct" [max]="totalItems" type="number" min="1"/>
+              </div>
+              <span class="ml-2">
+                  {{totalItems}} sản phẩm có sẵn
+                </span>
+            </div>
+          </div>
+        </div>
+        <div class="action">
+          <button class="add-to-cart btn btn-default" [disabled]="isSelectedAllProps" (click)="onOrderProduct()">Đặt hàng</button>
+          <p class="error kt-error-403" *ngIf="isSelectedAllProps">Vui lòng chọn Phân loại hàng</p>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <div class="row product-property">
+              <div class="col-md-3 col-xs-3 property__label">Tên sản phẩm:</div>
+              <div class="col-md-9 col-xs-9 property__value">
+                {{productDetail.itemName}}
+              </div>
+            </div>
+            <div class="row product-property">
+              <div class="col-md-3 col-xs-3 property__label">Thể loại:</div>
+              <div class="col-md-9 col-xs-9 property__value">
+                {{productDetail.categoryName}}
+              </div>
+            </div>
+            <div class="row product-property">
+              <div class="col-md-3 col-xs-3 property__label">Khối lượng:</div>
+              <div class="col-md-9 col-xs-9 property__value">
+                {{productDetail.weight}}
+              </div>
+            </div>
+            <div class="row product-property">
+              <div class="col-md-3 col-xs-3 property__label">Chiều dài:</div>
+              <div class="col-md-9 col-xs-9 property__value">
+                {{productDetail.height}}
+              </div>
+            </div>
+            <div class="row product-property">
+              <div class="col-md-3 col-xs-3 property__label">Chiều rộng:</div>
+              <div class="col-md-9 col-xs-9 property__value">
+                {{productDetail.width}}
+              </div>
+            </div>
+            <div class="row product-property">
+              <div class="col-md-3 col-xs-3 property__label">Mô tả:</div>
+              <div class="col-md-9 col-xs-9 property__value">
+                {{productDetail.description}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </app-portlet-body>
+  <!-- end::Body -->
+</app-portlet>

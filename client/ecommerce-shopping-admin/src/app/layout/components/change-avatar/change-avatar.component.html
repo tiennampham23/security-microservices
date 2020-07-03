@@ -1,0 +1,35 @@
+<div [ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }"
+     class="kt-portlet">
+  <div class="kt-portlet__head kt-portlet__head__custom">
+    <div class="kt-portlet__head-label">
+      <h3 class="kt-portlet__head-title">Đổi ảnh đại diện</h3>
+    </div>
+  </div>
+  <div class="kt-form">
+    <div class="kt-portlet__body">
+      <div class="avatar-upload">
+        <div class="avatar-edit">
+          <input accept=".png, .jpg, .jpeg .gif" id="imageUpload" type='file' (change)="onChangeAvatar($event)"/>
+          <label for="imageUpload"></label>
+        </div>
+        <div class="avatar-preview">
+          <img id="imagePreview" src="{{previewImage}}" alt="ảnh đại diện"/>
+        </div>
+      </div>
+    </div>
+    <div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit">
+      <div class="kt-form__actions kt-form__actions--solid">
+        <div class="row text-right">
+          <div class="col-lg-12">
+            <button type="button" mat-raised-button [mat-dialog-close]="null" cdkFocusInitial matTooltip="Hủy">
+              Hủy
+            </button>&nbsp;
+            <button type="button" mat-raised-button color="primary" (click)="onSubmit()" matTooltip="Save changes">
+              Lưu thay đổi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

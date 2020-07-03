@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col-md-3 kt-margin-bottom-10-mobile">
+    <mat-form-field class="mat-form-field-fluid">
+      <input [matDatepicker]="startDate"  matInput placeholder="Từ ngày">
+      <mat-datepicker-toggle [for]="startDate" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #startDate disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col-md-3 kt-margin-bottom-10-mobile">
+    <mat-form-field class="mat-form-field-fluid">
+      <input [matDatepicker]="toDate"  matInput placeholder="Đến ngày">
+      <mat-datepicker-toggle [for]="toDate" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #toDate disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col-md-6 kt-margin-bottom-10-mobile mb-2">
+    <button mat-button mat-flat-button color="primary">Tìm kiếm</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-6">
+    <div class="row row-full-height">
+      <div class="col-sm-12 col-md-12 col-lg-6">
+        <app-portlet [class]="'kt-portlet--height-fluid-half kt-portlet--border-bottom-brand'">
+          <app-portlet-body [class]="'kt-portlet__body--fluid'">
+            {{currentUser.balance}}
+          </app-portlet-body>
+        </app-portlet>
+
+        <div class="kt-space-20"></div>
+
+        <app-portlet [class]="'kt-portlet--height-fluid-half kt-portlet--border-bottom-brand'">
+          <app-portlet-body [class]="'kt-portlet__body--fluid'">
+            <app-display-report-number [desc]="'Tổng đơn thành công'" [value]="successOrders"></app-display-report-number>
+          </app-portlet-body>
+        </app-portlet>
+      </div>
+
+      <div class="col-sm-12 col-md-12 col-lg-6">
+        <app-portlet [class]="'kt-portlet--height-fluid-half kt-portlet--border-bottom-brand'">
+          <app-portlet-body [class]="'kt-portlet__body--fluid'">
+            <app-display-report-number [desc]="'Tổng đơn đang chờ'" [value]="waitOrders"></app-display-report-number>
+          </app-portlet-body>
+        </app-portlet>
+
+        <div class="kt-space-20"></div>
+
+        <app-portlet [class]="'kt-portlet--height-fluid-half kt-portlet--border-bottom-brand'">
+          <app-portlet-body [class]="'kt-portlet__body--fluid'">
+            <app-display-report-number [desc]="'Tổng đơn huỷ'" [value]="cancelOrders"></app-display-report-number>
+          </app-portlet-body>
+        </app-portlet>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <app-order-list [portletClass]="'kt-portlet--height-fluid'"></app-order-list>
+  </div>
+</div>
+
+
+<app-portlet>
+  <app-portlet-body [class]="'kt-portlet__body--fit'">
+    <div class="row row-no-padding row-col-separator-xl">
+      <div class="col-xl-4">
+        <app-portlet [class]="'kt-portlet--height-fluid'">
+          <app-portlet-header [title]="'Thống kê giao dịch'">
+          </app-portlet-header>
+          <app-portlet-body>
+            <app-transaction-timeline [transactions]="transactions">
+              <ng-template #actionTemplate let-item="item">
+                <span class="kt-widget4__number" [ngClass]="item.value >= 0 ? 'kt-font-success': 'kt-font-danger'">
+                  {{item.value | decimalFormat }}
+                </span>
+              </ng-template>
+            </app-transaction-timeline>
+          </app-portlet-body>
+          <app-portlet-footer>
+            <mat-paginator [pageSizeOptions]="[1, 3, 5, 10]"
+                           [pageSize]="filterTransactions.size"
+                           [length]="totalTransactions"
+                           [showFirstLastButtons]="true">
+            </mat-paginator>
+          </app-portlet-footer>
+        </app-portlet>
+      </div>
+      <div class="col-xl-4">
+        <app-portlet [class]="'kt-portlet--height-fluid'">
+          <app-portlet-body [class]="'kt-portlet__body--fluid'">
+            <app-display-report-number [desc]="'Tổng tiền sử dụng'" [value]="totalUsage"></app-display-report-number>
+          </app-portlet-body>
+        </app-portlet>
+        <!--        <kt-widget14 [title]="'Daily Sales'" [desc]="'Check out each collumn for more details'"></kt-widget14>-->
+      </div>
+      <div class="col-xl-4">
+        <!--        <kt-widget14 [title]="'Revenue Change'" [desc]="'Revenue change breakdown by cities'"></kt-widget14>-->
+      </div>
+    </div>
+  </app-portlet-body>
+</app-portlet>

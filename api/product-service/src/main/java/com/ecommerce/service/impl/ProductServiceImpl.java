@@ -92,4 +92,26 @@ public class ProductServiceImpl implements ProductService {
 		return 0;
 	}
 
+	@Override
+	public List<Product> getProductsByCategoryId(String categoryId) {
+		List<Product> products = null;
+		try {
+			products = productRepository.getProductsByCategoryId(categoryId);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return products;
+	}
+
+	@Override
+	public List<Product> getProductsBySupplierId(String supplierId) {
+		List<Product> products = null;
+		try {
+			products = productRepository.getProductsBySupplierId(supplierId);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return products;
+	}
+
 }

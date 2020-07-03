@@ -31,23 +31,9 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
-//	@Autowired
-//	private RestTemplate restTemplate;
-
 	@GetMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody ResponseDataDTO<List<Product>> getProducts(@RequestHeader Map<String, String> headers) {
 		ResponseDataDTO<List<Product>> response = new ResponseDataDTO<>();
-//		headers.forEach((key, value) -> {
-//	        System.out.println(String.format("Header '%s' = %s", key, value));
-//	    });
-//		
-//		
-//		HttpHeaders rqHeaders = new HttpHeaders();
-//		rqHeaders.setContentType(MediaType.APPLICATION_JSON);
-//		rqHeaders.set("Authorization", headers.get("authorization"));
-//		HttpEntity<Object> entity = new HttpEntity<Object>("parameters", rqHeaders);
-//		ResponseEntity<String> res = restTemplate.exchange("http://localhost:8762/get-current-user", HttpMethod.GET, entity, String.class);
-//		System.out.println(res);
 		try {
 			List<Product> result = productService.getAll();
 			response.setData(result);
@@ -81,10 +67,44 @@ public class ProductController {
 	}
 	
 	@GetMapping(value = "/getbyid/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody ResponseDataDTO<Optional<Product>> getLaptopById(@PathVariable("id") int id) {
+	public @ResponseBody ResponseDataDTO<Optional<Product>> getProductById(@PathVariable("id") int id) {
 		ResponseDataDTO<Optional<Product>> response = new ResponseDataDTO<>();
 		try {
 			response.setData(productService.getProductById(id));
+			response.setCode(Constants.SUCCESS_CODE);
+			response.setMessage(Constants.SUCCESS_MSG);
+		} catch (Exception e) {
+			// TODO: handle exception
+			response.setData(null);
+			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
+			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
+		}
+
+		return response;
+	}
+	
+	@GetMapping(value = "/get-products-by-category", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody ResponseDataDTO<List<Product>> getProductsByCategory(String categoryId) {
+		ResponseDataDTO<List<Product>> response = new ResponseDataDTO<>();
+		try {
+			response.setData(productService.getProductsByCategoryId(categoryId));
+			response.setCode(Constants.SUCCESS_CODE);
+			response.setMessage(Constants.SUCCESS_MSG);
+		} catch (Exception e) {
+			// TODO: handle exception
+			response.setData(null);
+			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
+			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
+		}
+
+		return response;
+	}
+	
+	@GetMapping(value = "/get-products-by-supplier", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody ResponseDataDTO<List<Product>> getProductsBySupplier(String supplierId) {
+		ResponseDataDTO<List<Product>> response = new ResponseDataDTO<>();
+		try {
+			response.setData(productService.getProductsByCategoryId(supplierId));
 			response.setCode(Constants.SUCCESS_CODE);
 			response.setMessage(Constants.SUCCESS_MSG);
 		} catch (Exception e) {

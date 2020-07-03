@@ -1,0 +1,27 @@
+@import "variables";
+.snack-bar-message {
+  padding: 4px 16px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+
+  .snack-bar-container {
+    color: #fff !important;
+  }
+
+  &.information {
+    background-color: $color-support-blue;
+  }
+
+  &.success {
+    background-color: $color-success;
+  }
+
+  &.warning {
+    background-color: $color-warning;
+  }
+
+  &.error {
+    background-color: $color-critical;
+  }
+}

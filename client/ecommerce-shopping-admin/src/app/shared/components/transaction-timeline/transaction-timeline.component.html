@@ -1,0 +1,23 @@
+<div class="kt-widget4">
+  <ng-container *ngFor="let item of transactions">
+    <ng-container [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{item: item}"></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #itemTemplate let-item="item">
+  <div class="kt-widget4__item row">
+    <span class="kt-widget4__icon col-md-1">
+			<i [ngClass]="'flaticon2-rocket kt-font-brand'"></i>
+		</span>
+
+    <span class="kt-widget4__title col-md-2" *ngIf="item.createdAt">{{item.createdAt | date: 'dd/MM/yyyy'}}</span>
+
+    <div class="kt-widget4__info col-md-7" *ngIf="item.name || item.note">
+      <span class="kt-widget4__title">{{item.name}}</span>
+      <span class="kt-widget4__text" *ngIf="item.note">{{item.note}}</span>
+    </div>
+    <div class="col-md-2">
+      <ng-container [ngTemplateOutlet]="actionTemplate" [ngTemplateOutletContext]="{item: item}"></ng-container>
+    </div>
+  </div>
+</ng-template>
