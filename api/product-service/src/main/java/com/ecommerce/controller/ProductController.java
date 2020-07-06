@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import com.ecommerce.service.ProductService;
 
 @Controller
 @RequestMapping("/")
+@CrossOrigin
 public class ProductController {
 
 	@Autowired
@@ -49,11 +51,11 @@ public class ProductController {
 	}
 
 	@GetMapping(value = "/page", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody ResponseDataDTO<Page<Product>> getPageableProduct(Pageable pageable) {
+	public @ResponseBody ResponseDataDTO<Page<Product>> getPageableProduct(Pageable pageable, String keywords) {
 		ResponseDataDTO<Page<Product>> response = new ResponseDataDTO<>();
 
 		try {
-			Page<Product> result = productService.getPageable(pageable);
+			Page<Product> result = productService.getPageable(pageable, keywords);
 			response.setData(result);
 			response.setCode(Constants.SUCCESS_CODE);
 			response.setMessage(Constants.SUCCESS_MSG);

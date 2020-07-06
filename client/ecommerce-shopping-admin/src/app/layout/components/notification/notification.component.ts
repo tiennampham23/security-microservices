@@ -51,14 +51,12 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private notificationService: NotificationService,
     private router: Router
   ) {
   }
 
   ngOnInit() {
-    this.loadNotificationsByBoss(this.filterNotification);
-    this.loadUnreadNotifications();
+
   }
 
   ngOnDestroy() {
@@ -76,21 +74,5 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   onGotoNotificationDetail(notification: NotificationModel) {
     return this.router.navigateByUrl(`/notification/${notification.id}`);
-  }
-
-  private loadNotificationsByBoss(filterNotification: { page: string; size: string }) {
-    const notifications$ = this.notificationService.loadNotificationByBoss(filterNotification)
-      .pipe(takeUntil(this.unsubscribe));
-    notifications$.subscribe((res: ResponseHttp<NotificationModel[]>) => {
-      this.notifications = res.data;
-    });
-  }
-
-  private loadUnreadNotifications() {
-    const unreadNotifications$ = this.notificationService.getUnreadNotifications()
-      .pipe(takeUntil(this.unsubscribe));
-    unreadNotifications$.subscribe((res: { unread: number }) => {
-      this.unreadNotifications = res.unread;
-    });
   }
 }

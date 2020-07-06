@@ -21,7 +21,7 @@
               <label>
                 <input
                   #searchInput
-                  [formControl]="keyword"
+                  [formControl]="keywords"
                   class="mat-form-field mat-form-field-fluid"
                   matInput
                   placeholder="Tìm kiếm sản phẩm">
@@ -102,71 +102,34 @@
         <!--          <mat-cell *matCellDef="let product" class="mat-column-vinCode">{{product.id}}</mat-cell>-->
         <!--        </ng-container>-->
 
-        <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-          <mat-cell *matCellDef="let product">{{product.name}}</mat-cell>
+        <ng-container matColumnDef="productName">
+          <mat-header-cell *matHeaderCellDef>Tên sản phẩm</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.productName}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="code">
-          <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
-          <mat-cell *matCellDef="let product">{{product.code}}</mat-cell>
+        <ng-container matColumnDef="thumbnail">
+          <mat-header-cell *matHeaderCellDef>Hình ảnh</mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <img alt="avatar" class="img-fluid" src="{{product.thumbnail}}"/>
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="price">
-          <mat-header-cell *matHeaderCellDef>Price(VND)</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Giá thành(VND)</mat-header-cell>
           <mat-cell *matCellDef="let product">{{product.price | decimalFormat}} VND</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="avatar">
-          <mat-header-cell *matHeaderCellDef>Avatar</mat-header-cell>
-          <mat-cell *matCellDef="let product">
-            <img alt="avatar" class="img-fluid" src="{{product.avatar}}"/>
-          </mat-cell>
+        <ng-container matColumnDef="amount">
+          <mat-header-cell *matHeaderCellDef>Số lượng</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.amount | decimalFormat}}</mat-cell>
         </ng-container>
-
-        <ng-container matColumnDef="totalNumber">
-          <mat-header-cell *matHeaderCellDef>TotalNumber</mat-header-cell>
-          <mat-cell *matCellDef="let product">{{product.totalNumber | decimalFormat}}</mat-cell>
+        <ng-container matColumnDef="category">
+          <mat-header-cell *matHeaderCellDef>Thể loại</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.amount}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="description">
-          <mat-header-cell *matHeaderCellDef>description</mat-header-cell>
-          <mat-cell *matCellDef="let product">{{product.description}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="shippingFee">
-          <mat-header-cell *matHeaderCellDef>shippingFee(VND)</mat-header-cell>
-          <mat-cell *matCellDef="let product">{{product.shippingFee | decimalFormat}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="weight">
-          <mat-header-cell *matHeaderCellDef>weight</mat-header-cell>
-          <mat-cell *matCellDef="let product">{{product.weight | decimalFormat}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="imageLink">
-          <mat-header-cell *matHeaderCellDef>imageLink</mat-header-cell>
-          <mat-cell *matCellDef="let product">
-            <mat-select (selectionChange)="onGoToLink($event)" placeholder="Chọn link sản phẩm">
-              <mat-option *ngFor="let link of (product.imageLink | convertStringToArray)" [value]="link">
-                {{ link }}
-              </mat-option>
-            </mat-select>
-          </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="otherLink">
-          <mat-header-cell *matHeaderCellDef>otherLink</mat-header-cell>
-          <mat-cell *matCellDef="let product">
-            <mat-select (selectionChange)="onGoToLink($event)" placeholder="Chọn link bổ sung">
-              <mat-option *ngFor="let link of (product.otherLink | convertStringToArray)" [value]="link">
-                {{ link }}
-              </mat-option>
-            </mat-select>
-          </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="height">
-          <mat-header-cell *matHeaderCellDef>height</mat-header-cell>
-          <mat-cell *matCellDef="let product">{{product.height | decimalFormat}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="width">
-          <mat-header-cell *matHeaderCellDef>width</mat-header-cell>
-          <mat-cell *matCellDef="let product">{{product.width | decimalFormat}}</mat-cell>
+        <ng-container matColumnDef="supplier">
+          <mat-header-cell *matHeaderCellDef>Nhà cung cấp</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{product.amount | decimalFormat}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">
@@ -174,7 +137,7 @@
             Actions
           </mat-header-cell>
           <mat-cell *matCellDef="let product">
-            <button (click)="editProduct(product.id)" *ngIf="currentRole === 1" color="primary" mat-icon-button
+            <button (click)="editProduct(product.id)" color="primary" mat-icon-button
                     matTooltip="Edit product" type="button">
               <a class="btn btn-icon btn-light btn-sm">
                 <span class="svg-icon svg-icon-md svg-icon-primary">
@@ -196,7 +159,7 @@
                 </span>
               </a>
             </button>&nbsp;
-            <button (click)="deleteProduct(product)" *ngIf="currentRole === 1" color="warn" mat-icon-button
+            <button (click)="deleteProduct(product)" color="warn" mat-icon-button
                     matTooltip="Delete product" type="button">
 <!--              <mat-icon>delete</mat-icon>-->
               <a class="btn btn-icon btn-light btn-sm">

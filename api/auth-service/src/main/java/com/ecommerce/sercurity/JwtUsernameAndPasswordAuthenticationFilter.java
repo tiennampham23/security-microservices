@@ -20,7 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.ecommerce.model.JwtConfig;
+import com.ecommerce.model.Token;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,6 +32,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 	private AuthenticationManager authManager;
 
 	private final JwtConfig jwtConfig;
+	
+	private Gson gson = new Gson();
 
 	public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig) {
 		this.authManager = authManager;
@@ -76,7 +80,13 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 				.signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes()).compact();
 
 		// Add token to header
+		Token accessToken = new Token(jwtConfig.getPrefix() + token);
+		
 		response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
+		response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(gson.toJson(accessToken));
+		response.getWriter().flush();
 	}
 }
 

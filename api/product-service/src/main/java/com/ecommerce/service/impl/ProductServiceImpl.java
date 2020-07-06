@@ -20,7 +20,7 @@ import com.ecommerce.util.FileExtension;
 public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	private Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
 	@Override
@@ -29,8 +29,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Page<Product> getPageable(Pageable pageable) {
-		return productRepository.findAll(pageable);
+	public Page<Product> getPageable(Pageable pageable, String keywords) {
+		return productRepository.findAllByProductNameLike(pageable, "%" + keywords + "%");
 	}
 
 	@Override
@@ -45,11 +45,10 @@ public class ProductServiceImpl implements ProductService {
 		if (productDTO.getThumbnail() != null) {
 			pathImage = FileExtension.saveFile(productDTO.getThumbnail());
 		}
-		
 
 		Product product = new Product(productDTO.getProductName(), productDTO.getDescription(), pathImage,
 				productDTO.getPrice(), productDTO.getAmount(), productDTO.getCategoryId(), productDTO.getSupplierId());
-	
+
 		try {
 			productRepository.save(product);
 			return 1;
@@ -57,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
 			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 		}
-		
+
 		return 0;
 	}
 
@@ -68,19 +67,18 @@ public class ProductServiceImpl implements ProductService {
 		if (productDTO.getThumbnail() != null) {
 			pathImage = FileExtension.saveFile(productDTO.getThumbnail());
 		}
-		
+
 		if (pathImage != null) {
 			existProduct.setThumbnail(pathImage);
 		}
-		
-		
+
 		existProduct.setAmount(productDTO.getAmount());
 		existProduct.setProductName(productDTO.getProductName());
 		existProduct.setDescription(productDTO.getDescription());
 		existProduct.setPrice(productDTO.getPrice());
 		existProduct.setCategoryId(productDTO.getCategoryId());
 		existProduct.setSupplierId(productDTO.getSupplierId());
-		
+
 		try {
 			productRepository.save(existProduct);
 			return 1;
@@ -88,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
 			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 		}
-		
+
 		return 0;
 	}
 
@@ -97,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> products = null;
 		try {
 			products = productRepository.getProductsByCategoryId(categoryId);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return products;
@@ -108,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> products = null;
 		try {
 			products = productRepository.getProductsBySupplierId(supplierId);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return products;

@@ -11,30 +11,4 @@ export class NotificationDataSource extends BaseDataSource {
   ) {
     super();
   }
-
-  loadMyNotifications(queryParams: {
-    page: string,
-    size: string,
-    _keyword: string,
-    active: number
-  }) {
-    this.loading$.next(true);
-    this.notificationService.loadMyNotifications(queryParams)
-      .pipe(
-        map((response: ResponseHttp<OrderModel[]>) => {
-          this.paginatorTotalSubject.next(response.total || response.totalCount);
-          this.entitiesSubject.next(response.data);
-          this.hasItems = true;
-          return response;
-        }),
-        catchError((err) => {
-          return of(null);
-        }),
-        finalize(() => {
-          setTimeout(() => {
-            this.loading$.next(false);
-          }, 1000);
-        })
-      ).subscribe();
-  }
 }

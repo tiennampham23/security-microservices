@@ -6,7 +6,7 @@ import {UserModel} from '@drop-shipping/shared/data-transform-objects/public-api
 
 const router = {
   login: `/auth`,
-  loadCurrentUser: `/users/me`,
+  loadCurrentUser: `/get-current-user`,
   register: `/auth/signUp`
 };
 @Injectable({

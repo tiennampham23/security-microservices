@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService, ProductService} from '@drop-shipping/shared/https/public-api';
 import {SubHeaderService} from '@drop-shipping/shared/services/public-api';
 import {debounceTime, distinctUntilChanged, skip, tap} from 'rxjs/operators';
-import {ProductModel, UserModel} from '@drop-shipping/shared/data-transform-objects/public-api';
+import {ProductModel} from '@drop-shipping/shared/data-transform-objects/public-api';
 import {SelectionModel} from '@angular/cdk/collections';
 import {Logger} from '@drop-shipping/core/logger/public-api';
 import {FormControl} from '@angular/forms';
@@ -24,16 +24,14 @@ const logger = new Logger('ProductListComponent');
 export class ProductListComponent implements OnInit, OnDestroy {
   dataSource: ProductDataSource;
 
-  currentRole: number;
-
   filterSearchProduct: {
     page: number,
-    size: number,
-    _keyword: string
+    number: number,
+    keywords: string
   } = {
     page: 0,
-    size: 0,
-    _keyword: null
+    number: 0,
+    keywords: null
   };
 
   products: ProductModel[] = [];
@@ -41,22 +39,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
   selection = new SelectionModel<ProductModel>(true, []);
   displayedColumns = [
     'select',
-    'name',
-    'code',
-    'avatar',
+    'productName',
+    'thumbnail',
     'price',
-    'totalNumber',
-    'description',
-    'shippingFee',
-    'weight',
-    'imageLink',
-    'otherLink',
-    'height',
-    'width',
+    'amount',
+    'category',
+    'supplier',
     'actions'
   ];
 
-  keyword = new FormControl('');
+  keywords = new FormControl('');
 
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -73,15 +65,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private productService: ProductService
   ) {
     this.filterSearchProduct.page = 0;
-    this.filterSearchProduct.size = 10;
+    this.filterSearchProduct.number = 10;
   }
 
   ngOnInit(): void {
-    this.authenticationService.currentUser.subscribe((user: UserModel) => {
-      if (user) {
-        this.currentRole = user.role;
-      }
-    });
     this.subheaderService.setTitle('Danh sách sản phẩm');
     this.dataSource = new ProductDataSource(this.productService);
     this.loadProducts(this.filterSearchProduct);
@@ -134,8 +121,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   loadProducts(filterSearchProduct: {
     page: number,
-    size: number,
-    _keyword: string
+    number: number,
+    keywords: string
   }) {
     this.dataSource.loadProducts(filterSearchProduct);
     const entitiesSubscription = this.dataSource.entitiesSubject.pipe(
@@ -152,7 +139,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     const paginatorSubscriptions = merge(this.paginator.page).pipe(
       tap(($event: PageEvent) => {
         this.filterSearchProduct.page = $event.pageIndex;
-        this.filterSearchProduct.size = $event.pageSize;
+        this.filterSearchProduct.number = $event.pageSize;
         this.loadProducts(this.filterSearchProduct);
       })
     ).subscribe();
@@ -160,13 +147,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   private subscribeSearchKeyword() {
-    const searchTextKeywordSubscription = this.keyword.valueChanges.pipe(
+    const searchTextKeywordSubscription = this.keywords.valueChanges.pipe(
       debounceTime(2000),
       distinctUntilChanged()
     ).subscribe((text: string) => {
       this.filterSearchProduct.page = 0;
-      this.filterSearchProduct.size = 10;
-      this.filterSearchProduct._keyword = text;
+      this.filterSearchProduct.number = 10;
+      this.filterSearchProduct.keywords = text;
       this.loadProducts(this.filterSearchProduct);
     });
     this.subscriptions.push(searchTextKeywordSubscription);

@@ -1,6 +1,11 @@
 import {BaseDataSource} from './base.datasource';
 import {catchError, finalize, map} from 'rxjs/operators';
-import {ResponseHttp, UserModel} from '@drop-shipping/shared/data-transform-objects/public-api';
+import {
+  PaginationModel,
+  ProductModel,
+  ResponseHttp,
+  UserModel
+} from '@drop-shipping/shared/data-transform-objects/public-api';
 import {Logger} from '@drop-shipping/core/logger/public-api';
 import {of} from 'rxjs';
 import {UserService} from '@drop-shipping/shared/https/user.service';
@@ -24,9 +29,9 @@ export class UserDataSource extends BaseDataSource {
     this.loading$.next(true);
     this.userService.loadChildUsers(queryParams)
       .pipe(
-        map((response: ResponseHttp<UserModel[]>) => {
-          this.paginatorTotalSubject.next(response.total);
-          this.entitiesSubject.next(response.data);
+        map((response: ResponseHttp<PaginationModel<ProductModel[]>>) => {
+          this.paginatorTotalSubject.next(response.data.totalElements);
+          this.entitiesSubject.next(response.data.content);
           this.hasItems = true;
           return response;
         }),

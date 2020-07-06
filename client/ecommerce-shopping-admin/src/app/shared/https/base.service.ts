@@ -20,7 +20,7 @@ export class BaseService {
   ) {
     this.httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
       }),

@@ -3,7 +3,7 @@ import {fmt, mapToFormData, mapToHttpParamsQuery} from '@drop-shipping/core/util
 import {BaseService} from './base.service';
 
 const router = {
-  loadProducts: `/items/`,
+  loadProducts: `/products/page`,
   loadSubProductById: `/items/list-modal/{productId}`,
   createProduct: `/items`,
   updateProduct: `/items/{productId}`,
@@ -22,8 +22,8 @@ export class ProductService {
 
   loadProducts(filter?: {
     page?: number,
-    size?: number,
-    _keyword?: string
+    number?: number,
+    keywords?: string
   }) {
     const params = mapToHttpParamsQuery(filter);
     return this.httpClient.get(router.loadProducts, params);

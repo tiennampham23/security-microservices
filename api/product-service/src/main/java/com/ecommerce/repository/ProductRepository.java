@@ -2,6 +2,8 @@ package com.ecommerce.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
 	@Query(value = "select * from product p where p.supplier = ?1", nativeQuery = true)
 	List<Product> getProductsBySupplierId(String supplierId);
+	
+	Page<Product> findAllByProductNameLike(Pageable pageable, String keywords);
 }

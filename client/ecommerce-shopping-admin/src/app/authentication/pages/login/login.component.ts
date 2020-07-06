@@ -95,8 +95,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         switchMap((response: LoginResponse) => {
           const credential = {
             userName: controls.userName.value,
-            token: response.token,
-            refreshToken: response.refreshToken
+            token: response.accessToken
           } as Credentials;
           return of(credential);
         }),

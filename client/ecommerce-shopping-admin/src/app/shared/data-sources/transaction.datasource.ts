@@ -4,6 +4,8 @@ import {catchError, finalize, map} from 'rxjs/operators';
 import {ResponseHttp} from '@drop-shipping/shared/data-transform-objects/response-http.model';
 import {of} from 'rxjs';
 import {TransactionModel} from '@drop-shipping/shared/data-transform-objects/transaction.model';
+import {PaginationModel} from "@drop-shipping/shared/data-transform-objects/pagination.model";
+import {ProductModel} from "@drop-shipping/shared/data-transform-objects/product.model";
 
 export class TransactionDataSource extends BaseDataSource {
   constructor(
@@ -24,9 +26,9 @@ export class TransactionDataSource extends BaseDataSource {
     this.loading$.next(true);
     this.transactionService.loadTransactions(queryParams)
       .pipe(
-        map((response: ResponseHttp<TransactionModel[]>) => {
-          this.paginatorTotalSubject.next(response.total || response.totalCount);
-          this.entitiesSubject.next(response.data);
+        map((response: ResponseHttp<PaginationModel<ProductModel[]>>) => {
+          this.paginatorTotalSubject.next(response.data.totalElements);
+          this.entitiesSubject.next(response.data.content);
           this.hasItems = true;
           return response;
         }),

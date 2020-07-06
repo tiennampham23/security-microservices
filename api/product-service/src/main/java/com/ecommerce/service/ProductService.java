@@ -11,7 +11,7 @@ import com.ecommerce.model.Product;
 
 public interface ProductService {
 	List<Product> getAll();
-	Page<Product> getPageable(Pageable pageable);
+	Page<Product> getPageable(Pageable pageable, String keywords);
 	Optional<Product> getProductById(int id);
 	int create(ProductDTO product);
 	int update(ProductDTO product, int id);

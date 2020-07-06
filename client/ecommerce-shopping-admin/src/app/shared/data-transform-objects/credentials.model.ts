@@ -1,7 +1,6 @@
 export interface Credentials {
   userName: string;
   token: string;
-  refreshToken: string;
   type?: SCHEME_TYPE.BEARER;
 }
 

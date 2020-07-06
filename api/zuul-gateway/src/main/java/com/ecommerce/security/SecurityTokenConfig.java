@@ -42,6 +42,8 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/products/update/**").hasRole("ADMIN")
 				// Any other request must be authenticated
 				.anyRequest().authenticated();
+		
+		http.cors();
 	}
 
 	@Bean

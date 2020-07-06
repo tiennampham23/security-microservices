@@ -1,7 +1,12 @@
 import {BaseDataSource} from './base.datasource';
 import {OrderService} from '@drop-shipping/shared/https/public-api';
 import {catchError, finalize, map} from 'rxjs/operators';
-import {OrderModel, ResponseHttp} from '@drop-shipping/shared/data-transform-objects/public-api';
+import {
+  OrderModel,
+  PaginationModel,
+  ProductModel,
+  ResponseHttp
+} from '@drop-shipping/shared/data-transform-objects/public-api';
 import {Logger} from '@drop-shipping/core/logger/public-api';
 import {of} from 'rxjs';
 
@@ -27,9 +32,9 @@ export class OrderDataSource extends BaseDataSource {
     this.loading$.next(true);
     this.orderService.loadOrders(queryParams)
       .pipe(
-        map((response: ResponseHttp<OrderModel[]>) => {
-          this.paginatorTotalSubject.next(response.total || response.totalCount);
-          this.entitiesSubject.next(response.data);
+        map((response: ResponseHttp<PaginationModel<ProductModel[]>>) => {
+          this.paginatorTotalSubject.next(response.data.totalElements);
+          this.entitiesSubject.next(response.data.content);
           this.hasItems = true;
           return response;
         }),

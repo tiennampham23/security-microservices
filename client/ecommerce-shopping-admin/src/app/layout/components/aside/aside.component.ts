@@ -83,28 +83,7 @@ export class AsideComponent implements OnInit {
       );
     }
 
-    this.authService.currentUser.subscribe((user: UserModel) => {
-      if (user) {
-        const role = user.role;
-        if (role === UserLevel.LV1) {
-          // if user is blocked
-          if (user.active === 0 || new Date(user.expiredDate) <= new Date()) {
-            this.menuList = objectPath.get(new MenuConfig().configsUserLevel1Block, 'aside.items');
-          } else {
-            this.menuList = objectPath.get(new MenuConfig().configsUserLevel1, 'aside.items');
-          }
-          this.cdr.detectChanges();
-        } else if (role === UserLevel.LV2) {
-          // if user is blocked
-          if (user.active === 0 || new Date(user.expiredDate) <= new Date()) {
-            this.menuList = objectPath.get(new MenuConfig().configsUserLevel2Block, 'aside.items');
-          } else {
-            this.menuList = objectPath.get(new MenuConfig().configsUserLevel2, 'aside.items');
-          }
-          this.cdr.detectChanges();
-        }
-      }
-    });
+    this.menuList = objectPath.get(new MenuConfig().getMenus, 'aside.items');
   }
 
   isMenuItemIsActive(item): boolean {

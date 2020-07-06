@@ -1,7 +1,5 @@
 export interface ResponseHttp<T> {
-  total?: number;
-  totalCount?: number;
   data: T;
-  length?: number;
+  code?: number;
   message?: string;
 }

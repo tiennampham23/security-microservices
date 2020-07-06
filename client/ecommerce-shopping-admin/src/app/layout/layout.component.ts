@@ -25,8 +25,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private layoutConfigService: LayoutConfigService,
     private menuConfigService: MenuConfigService,
     private htmlClassService: HtmlClassService,
-    private pageConfigService: PageConfigService,
-    private authService: AuthenticationService
+    private pageConfigService: PageConfigService
   ) {
     this.layoutConfigService.loadConfigs(new LayoutConfig().configs);
     this.pageConfigService.loadConfigs(new PageConfig().configs);

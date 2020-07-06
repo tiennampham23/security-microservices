@@ -46,18 +46,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     return this.router.navigateByUrl('/auth/login');
   }
 
-  changeAvatar() {
-    const dialogRef = this.dialog.open(ChangeAvatarComponent, {
-      data: {
-        currentUser: this.currentUser
-      }
-    });
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        this.loadCurrentUser();
-      }
-    });
-  }
 
   private loadCurrentUser() {
     const currentUser$ = this.authenticationService.loadCurrentUser().pipe(takeUntil(this.unsubscribe));

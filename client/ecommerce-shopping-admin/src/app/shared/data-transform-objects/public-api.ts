@@ -11,3 +11,4 @@ export { StatusModel } from './status.model';
 export { TransactionModel } from './transaction.model';
 export { CategoryModel } from './category.model';
 export { NotificationModel } from './notification.model';
+export { PaginationModel } from './pagination.model';

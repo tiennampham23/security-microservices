@@ -23,27 +23,8 @@ const routes: Routes = [
         canActivate: [AuthorizationGuard]
       },
       {
-        path: 'user-profile',
-        loadChildren: () => import('@drop-shipping/pages/user-profile/user-profile.module').then(m => m.UserProfileModule)
-      },
-      {
         path: 'order',
         loadChildren: () => import('@drop-shipping/pages/order/order.module').then(m => m.OrderModule),
-        canActivate: [AuthorizationGuard]
-      },
-      {
-        path: 'order-product',
-        loadChildren: () => import('@drop-shipping/pages/order-product/order-product.module').then(m => m.OrderProductModule),
-        canActivate: [AuthorizationGuard]
-      },
-      {
-        path: 'transaction',
-        loadChildren: () => import('@drop-shipping/pages/transaction/transaction.module').then(m => m.TransactionModule),
-        canActivate: [AuthorizationGuard]
-      },
-      {
-        path: 'notification',
-        loadChildren: () => import('@drop-shipping/pages/notification/notification.module').then(m => m.NotificationModule),
         canActivate: [AuthorizationGuard]
       },
       {
