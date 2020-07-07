@@ -53,7 +53,7 @@ export class BaseService {
       .pipe(map(BaseService.extractData));
   }
 
-  // api post method form-data
+  // api put method form-data
   putFormData(uri: string, data?: any, params?: HttpParams) {
     return this.httpClient
       .put(uri, data, {

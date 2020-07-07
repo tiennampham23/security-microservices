@@ -4,10 +4,10 @@ import {BaseService} from './base.service';
 
 const router = {
   loadProducts: `/products/page`,
-  loadSubProductById: `/items/list-modal/{productId}`,
-  createProduct: `/items`,
-  updateProduct: `/items/{productId}`,
-  getProductDetail: `/items/{productId}`
+  loadSubProductById: `/products/getbyid/{productId}`,
+  createProduct: `/products/create`,
+  updateProduct: `/products/update/{productId}`,
+  getProductDetail: `/products/getbyid/{productId}`,
 };
 
 @Injectable({
@@ -29,27 +29,15 @@ export class ProductService {
     return this.httpClient.get(router.loadProducts, params);
   }
 
-  loadSubProductById(productId: string) {
-    const uri = fmt(router.loadSubProductById, {productId});
-    return this.httpClient.get(uri);
-  }
-
   createProduct(
     body: {
-      avatar: File,
-      code: string,
-      name: string,
+      productName: string,
       description: string,
-      price: string,
-      shippingFee: string,
-      weight: string,
-      inventoryValue: string,
-      height: string,
-      width: string,
-      categoryId: string,
-      imageLink: string,
-      otherLink: string,
-      itemModals: string
+      thumbnail: File,
+      price: number,
+      amount: number,
+      categoryId: number,
+      supplierId: number
     }
   ) {
     const formData = mapToFormData(body);
@@ -59,25 +47,18 @@ export class ProductService {
   updateProduct(
     productId: string,
     body: {
-      avatar: File | string,
-      code: string,
-      name: string,
+      productName: string,
       description: string,
-      price: string,
-      shippingFee: string,
-      weight: string,
-      inventoryValue: string,
-      height: string,
-      width: string,
-      categoryId: string,
-      imageLink: string,
-      otherLink: string,
-      itemModals: string
+      thumbnail: File,
+      price: number,
+      amount: number,
+      categoryId: number,
+      supplierId: number
     }
   ) {
     const formData = mapToFormData(body);
     const uri = fmt(router.updateProduct, { productId });
-    return this.httpClient.putFormData(uri, formData);
+    return this.httpClient.postFormData(uri, formData);
   }
 
   loadProductById(productId: string) {

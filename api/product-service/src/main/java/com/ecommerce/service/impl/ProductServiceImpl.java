@@ -30,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Page<Product> getPageable(Pageable pageable, String keywords) {
+		if (keywords == null) {
+			keywords = "";
+		}
 		return productRepository.findAllByProductNameLike(pageable, "%" + keywords + "%");
 	}
 
@@ -43,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 	public int create(ProductDTO productDTO) {
 		String pathImage = null;
 		if (productDTO.getThumbnail() != null) {
-			pathImage = FileExtension.saveFile(productDTO.getThumbnail());
+			pathImage = FileExtension.saveFile(productDTO.getThumbnail(), "products");
 		}
 
 		Product product = new Product(productDTO.getProductName(), productDTO.getDescription(), pathImage,
@@ -65,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
 		Product existProduct = productRepository.getOne(id);
 		String pathImage = null;
 		if (productDTO.getThumbnail() != null) {
-			pathImage = FileExtension.saveFile(productDTO.getThumbnail());
+			pathImage = FileExtension.saveFile(productDTO.getThumbnail(), "products");
 		}
 
 		if (pathImage != null) {

@@ -1,5 +1,4 @@
 import {SubProduct} from '@drop-shipping/shared/data-transform-objects/product.model';
-
 export { UserModel } from './user.model';
 export { Credentials } from './credentials.model';
 export { LoginResponse } from './login-response.model';
@@ -12,3 +11,4 @@ export { TransactionModel } from './transaction.model';
 export { CategoryModel } from './category.model';
 export { NotificationModel } from './notification.model';
 export { PaginationModel } from './pagination.model';
+export { SupplierModel } from './supplier.model';

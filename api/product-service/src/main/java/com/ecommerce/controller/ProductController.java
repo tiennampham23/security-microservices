@@ -136,7 +136,7 @@ public class ProductController {
 		return response;
 	}
 	
-	@PutMapping(value = "/update/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@PostMapping(value = "/update/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public @ResponseBody ResponseDataDTO<Integer> update(@PathVariable("id") int id, @ModelAttribute ProductDTO product) {
 		ResponseDataDTO<Integer> response = new ResponseDataDTO<>();
 		try {

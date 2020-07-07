@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {BaseService} from './base.service';
 
 const router = {
-  loadCategories: `/categories`
+  loadCategories: `/categories/all`
 }
 @Injectable({
   providedIn: 'root'

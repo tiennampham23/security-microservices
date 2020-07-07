@@ -4,10 +4,20 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {merge, Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService, ProductService} from '@drop-shipping/shared/https/public-api';
+import {
+  AuthenticationService,
+  CategoryService,
+  ProductService,
+  SupplierService
+} from '@drop-shipping/shared/https/public-api';
 import {SubHeaderService} from '@drop-shipping/shared/services/public-api';
 import {debounceTime, distinctUntilChanged, skip, tap} from 'rxjs/operators';
-import {ProductModel} from '@drop-shipping/shared/data-transform-objects/public-api';
+import {
+  CategoryModel,
+  ProductModel,
+  ResponseHttp,
+  SupplierModel
+} from '@drop-shipping/shared/data-transform-objects/public-api';
 import {SelectionModel} from '@angular/cdk/collections';
 import {Logger} from '@drop-shipping/core/logger/public-api';
 import {FormControl} from '@angular/forms';
@@ -33,6 +43,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     number: 0,
     keywords: null
   };
+
+  categories: CategoryModel[];
+  suppliers: SupplierModel[];
 
   products: ProductModel[] = [];
 
@@ -62,7 +75,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private subheaderService: SubHeaderService,
     private authenticationService: AuthenticationService,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    private supplierService: SupplierService,
   ) {
     this.filterSearchProduct.page = 0;
     this.filterSearchProduct.number = 10;
@@ -72,6 +87,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.subheaderService.setTitle('Danh sách sản phẩm');
     this.dataSource = new ProductDataSource(this.productService);
     this.loadProducts(this.filterSearchProduct);
+    this.loadCategories();
+    this.loadSuppliers();
     this.subscribePaginator();
     this.subscribeSearchKeyword();
   }
@@ -115,8 +132,28 @@ export class ProductListComponent implements OnInit, OnDestroy {
   updateStatusForProducts() {
   }
 
-  onGoToLink($event: MatSelectChange) {
-    window.open($event.value, '_blank');
+  getCategoryName(categoryId: number) {
+    if (this.categories) {
+      let categoryName = null;
+      this.categories.forEach(category => {
+        if (categoryId ===  category.id) {
+          categoryName = category.categoryName;
+        }
+      });
+      return categoryName;
+    }
+  }
+
+  getSupplierName(supplierId: number) {
+    if (this.suppliers) {
+      let supplierName = null;
+      this.suppliers.forEach(supplier => {
+        if (supplierId ===  supplier.id) {
+          supplierName =  supplier.supplierName;
+        }
+      });
+      return supplierName;
+    }
   }
 
   loadProducts(filterSearchProduct: {
@@ -157,5 +194,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.loadProducts(this.filterSearchProduct);
     });
     this.subscriptions.push(searchTextKeywordSubscription);
+  }
+
+  private loadCategories() {
+    const categoriesSubscription = this.categoryService.loadCategories().subscribe((res: ResponseHttp<CategoryModel[]>) => {
+      this.categories = res.data;
+    });
+    this.subscriptions.push(categoriesSubscription);
+  }
+
+  private loadSuppliers() {
+    const suppliersSubscription = this.supplierService.loadSuppliers().subscribe((res: ResponseHttp<SupplierModel[]>) => {
+      this.suppliers = res.data;
+    });
+    this.subscriptions.push(suppliersSubscription);
   }
 }

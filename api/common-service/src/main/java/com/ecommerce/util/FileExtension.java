@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileExtension {
-	public static String saveFile(MultipartFile file) {
+	public static String saveFile(MultipartFile file, String subPath) {
 		if (!file.isEmpty()) {
 			byte[] bytes;
 			try {
@@ -18,7 +18,7 @@ public class FileExtension {
 				fos.write(bytes);
 				fos.close();
 				
-				return  "images\\" + fileName;
+				return "http://localhost:8762/" + subPath + "\\"  + "images\\" + fileName;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

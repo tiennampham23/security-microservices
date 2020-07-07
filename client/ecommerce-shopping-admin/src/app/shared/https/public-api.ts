@@ -9,3 +9,4 @@ export { StatusService } from './status.service';
 export { CategoryService } from './category.service';
 export { NotificationService } from './notification.service';
 export { UploadImageService } from './upload-image.service';
+export { SupplierService } from './supplier.service';
