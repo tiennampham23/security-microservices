@@ -2,6 +2,7 @@ package com.ecommerce.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,7 @@ import com.ecommerce.dto.ChangeStatusDTO;
 import com.ecommerce.dto.OrderDTO;
 import com.ecommerce.model.Constants;
 import com.ecommerce.model.Order;
+import com.ecommerce.model.OrderDetail;
 import com.ecommerce.model.ResponseDataDTO;
 import com.ecommerce.service.OrderService;
 
@@ -64,11 +67,11 @@ public class OrderController {
 	}
 
 	@GetMapping(value = "/page", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody ResponseDataDTO<Page<Order>> getPageableProduct(Pageable pageable) {
+	public @ResponseBody ResponseDataDTO<Page<Order>> getPageableProduct(Pageable pageable, String userId, String status, String fromDate, String toDate) {
 		ResponseDataDTO<Page<Order>> response = new ResponseDataDTO<>();
 
 		try {
-			Page<Order> result = orderService.getPageable(pageable);
+			Page<Order> result = orderService.getPageable(pageable, userId, status, fromDate, toDate);
 			response.setData(result);
 			response.setCode(Constants.SUCCESS_CODE);
 			response.setMessage(Constants.SUCCESS_MSG);
@@ -80,6 +83,42 @@ public class OrderController {
 		}
 		return response;
 	}
+	
+	@GetMapping(value = "/getbyid/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody ResponseDataDTO<Optional<Order>> getOrderById(@PathVariable("id") int id) {
+		ResponseDataDTO<Optional<Order>> response = new ResponseDataDTO<>();
+		try {
+			response.setData(orderService.getOrderById(id));
+			response.setCode(Constants.SUCCESS_CODE);
+			response.setMessage(Constants.SUCCESS_MSG);
+		} catch (Exception e) {
+			// TODO: handle exception
+			response.setData(null);
+			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
+			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
+		}
+
+		return response;
+	}
+	
+
+	@GetMapping(value = "/get-detail-by-id/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody ResponseDataDTO<List<OrderDetail>> getOrderDetailById(@PathVariable("id") int id) {
+		ResponseDataDTO<List<OrderDetail>> response = new ResponseDataDTO<>();
+		try {
+			response.setData(orderService.getOrderDetails(id));
+			response.setCode(Constants.SUCCESS_CODE);
+			response.setMessage(Constants.SUCCESS_MSG);
+		} catch (Exception e) {
+			// TODO: handle exception
+			response.setData(null);
+			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
+			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
+		}
+
+		return response;
+	}
+
 
 	@PostMapping(value = "/create", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -111,7 +150,7 @@ public class OrderController {
 		return response;
 	}
 
-	@PutMapping(value = "/change-status", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+	@PostMapping(value = "/change-status", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody ResponseDataDTO<Integer> changeStatus(@RequestBody ChangeStatusDTO changeStatusDTO) {
 		ResponseDataDTO<Integer> response = new ResponseDataDTO<>();

@@ -115,22 +115,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onShowDetailProduct(product: ProductModel) {
-    return this.router.navigate(['product', product.id]);
-  }
-
-  deleteProducts() {
-    logger.debug(this.selection.selected);
-  }
-
   deleteProduct(product) {
   }
 
-  fetchProducts() {
-  }
-
-  updateStatusForProducts() {
-  }
 
   getCategoryName(categoryId: number) {
     if (this.categories) {

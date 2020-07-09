@@ -6,32 +6,32 @@
     </div>
   </div>
   <div class="kt-form">
-    <div class="kt-portlet__body" *ngIf="orderDetail; let order">
+    <div class="kt-portlet__body" *ngIf="currentOrder; let order">
       <div class="kt-portlet__body-progress" *ngIf="!order">
         <mat-spinner [diameter]="20"></mat-spinner>
       </div>
       <div class="form-group kt-form__group row">
         <div class="col-lg-4 kt-margin-bottom-20-mobile">
-          <mat-label class="order-detail__label">ID:</mat-label>
-          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.id}}</span>
+          <mat-label class="order-detail__label">Người đặt:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{getUser(order.userId)}}</span>
         </div>
         <div class="col-lg-4 kt-margin-bottom-20-mobile">
-          <mat-label class="order-detail__label">Đơn vị vận chuyển:</mat-label>
-          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.deliveryAgent}}</span>
+          <mat-label class="order-detail__label">Số điện thoại:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.phone}}</span>
         </div>
         <div class="col-lg-4 kt-margin-bottom-20-mobile">
-          <mat-label class="order-detail__label">Ngày tạo:</mat-label>
-          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.createdAt | date: 'dd/MM/yyyy'}}</span>
+          <mat-label class="order-detail__label">Địa chỉ:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.address}}</span>
         </div>
       </div>
       <div class="form-group kt-form__group row">
         <div class="col-lg-4 kt-margin-bottom-20-mobile">
-          <mat-label class="order-detail__label">Tài khoản:</mat-label>
-          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.username}}</span>
+          <mat-label class="order-detail__label">Tổng tiền:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.totalPrice | decimalFormat}}</span>
         </div>
         <div class="col-lg-4 kt-margin-bottom-20-mobile">
-          <mat-label class="order-detail__label">Số lượng sản phẩm:</mat-label>
-          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.listItem.length}}</span>
+          <mat-label class="order-detail__label">Ngày tạo:</mat-label>
+          <span class="order-detail__value font-weight-bolder text-dark ml-1">{{order.createdDate | date: 'dd/MM/yyyy'}}</span>
         </div>
         <div class="col-lg-4 kt-margin-bottom-20-mobile">
           <mat-label class="order-detail__label">Trang thái:</mat-label>
@@ -41,26 +41,26 @@
       </div>
       <div class="form-group kt-form__group row">
         <div class="mat-table__wrapper">
-          <mat-table [dataSource]="order.listItem"
+          <mat-table [dataSource]="orderDetails"
                      class="lmat-elevation-z8">
             <ng-container matColumnDef="Tên sản phẩm">
               <mat-header-cell *matHeaderCellDef>Tên sản phẩm</mat-header-cell>
-              <mat-cell *matCellDef="let product">{{product.name}}</mat-cell>
+              <mat-cell *matCellDef="let product">{{getProduct(product.productId)}}</mat-cell>
               <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
             <ng-container matColumnDef="Số lượng">
               <mat-header-cell *matHeaderCellDef>Số lượng</mat-header-cell>
-              <mat-cell *matCellDef="let product">{{product.number}}</mat-cell>
+              <mat-cell *matCellDef="let product">{{product.amount}}</mat-cell>
               <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
             <ng-container matColumnDef="Giá">
               <mat-header-cell *matHeaderCellDef>Giá</mat-header-cell>
-              <mat-cell *matCellDef="let product">{{product.price | decimalFormat}}</mat-cell>
+              <mat-cell *matCellDef="let product">{{product.totalPrice | decimalFormat}}</mat-cell>
               <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
             <ng-container matColumnDef="Thành tiền">
               <mat-header-cell *matHeaderCellDef>Thành tiền</mat-header-cell>
-              <mat-cell *matCellDef="let product">{{product.price * product.number | decimalFormat}}</mat-cell>
+              <mat-cell *matCellDef="let product">{{product.totalPrice | decimalFormat}}</mat-cell>
               <mat-footer-cell *matFooterCellDef> Tổng: {{ calculateTotal() | decimalFormat }}</mat-footer-cell>
             </ng-container>
 

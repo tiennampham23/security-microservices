@@ -12,4 +12,7 @@ import com.ecommerce.model.UserModel;
 public interface UserRepository extends JpaRepository<UserModel, Integer> {
 	@Query(value = "Select * from tbuser u where u.username = ?1", nativeQuery = true)
 	List<UserModel> getUserByUserName(String userName);
+	
+	@Query(value = "Select * from tbuser u where u.roleid = 2", nativeQuery = true)
+	List<UserModel> findUsers(); 
 }

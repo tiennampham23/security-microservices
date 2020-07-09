@@ -22,13 +22,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProductBusinessComponent} from './pages/product-business/product-business.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatRadioModule} from '@angular/material/radio';
-import {ProductDetailComponent} from './components/product-detail/product-detail.component';
 import {OrderProductsModule} from '@drop-shipping/shared/components/order-products/order-products.module';
 import {SharedModule} from '@drop-shipping/shared/shared.module';
 
 
 @NgModule({
-  declarations: [ProductListComponent, ProductBusinessComponent, ProductDetailComponent],
+  declarations: [ProductListComponent, ProductBusinessComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

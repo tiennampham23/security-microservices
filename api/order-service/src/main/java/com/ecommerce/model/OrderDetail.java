@@ -18,7 +18,7 @@ public class OrderDetail implements Serializable {
 	private int id;
 	private int orderId;
 	private int productId;
-	private float totalPirce;
+	private float totalPrice;
 	private int amount;
 
 	public OrderDetail() {
@@ -26,12 +26,12 @@ public class OrderDetail implements Serializable {
 	}
 
 
-	public OrderDetail(int id, int orderId, int productId, float totalPirce, int amount) {
+	public OrderDetail(int id, int orderId, int productId, float totalPrice, int amount) {
 		super();
 		this.id = id;
 		this.orderId = orderId;
 		this.productId = productId;
-		this.totalPirce = totalPirce;
+		this.totalPrice = totalPrice;
 		this.amount = amount;
 	}
 
@@ -40,7 +40,7 @@ public class OrderDetail implements Serializable {
 		super();
 		this.orderId = orderId;
 		this.productId = productId;
-		this.totalPirce = totalPirce;
+		this.totalPrice = totalPirce;
 		this.amount = amount;
 	}
 
@@ -76,12 +76,12 @@ public class OrderDetail implements Serializable {
 	}
 
 	@Column(name = "totalprice")
-	public float getTotalPirce() {
-		return totalPirce;
+	public float getTotalPrice() {
+		return totalPrice;
 	}
 
-	public void setTotalPirce(float totalPirce) {
-		this.totalPirce = totalPirce;
+	public void setTotalPrice(float totalPirce) {
+		this.totalPrice = totalPirce;
 	}
 
 	@Column(name = "amount")

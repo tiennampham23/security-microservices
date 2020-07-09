@@ -17,8 +17,12 @@ export enum EStatusOrders {
   CANCEL = 'Huỷ'
 }
 
+export const ListStatus = [
+  'Đang chờ', 'Đã đóng gói', 'Đang vận chuyển', 'Thành công', 'Hoàn trả', 'Đổi trả', 'Yêu cầu khác', 'Huỷ'
+]
+
 export enum UserLevel {
-  LV1= 1,
+  LV1 = 1,
   LV2 = 2
 }
 
@@ -44,6 +48,8 @@ export const Delivery = [
     value: 'Bưu điện',
   }
 ];
+
+
 export enum ESort {
   DESC = '1',
   ASC = '2'

@@ -21,13 +21,11 @@ export class OrderDataSource extends BaseDataSource {
 
   loadOrders(queryParams: {
     userId: string,
-    statusId: string,
+    status: string,
     fromDate: string,
-    createdAt: string,
     toDate: string,
-    _keyword: string,
     page: string,
-    size: string
+    number: string
   }) {
     this.loading$.next(true);
     this.orderService.loadOrders(queryParams)

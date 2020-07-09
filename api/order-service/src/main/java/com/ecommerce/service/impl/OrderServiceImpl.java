@@ -1,6 +1,7 @@
 package com.ecommerce.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -77,14 +78,32 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Page<Order> getPageable(Pageable pageable) {
+	public Page<Order> getPageable(Pageable pageable, String userId, String status, String fromDate, String toDate) {
 		try {
-			return orderRepository.findAll(pageable);
+			if (status == null) {
+				status = "";
+			}
+			if (userId == null) {
+				userId = "";
+			}
+			System.out.println(fromDate);
+			System.out.println(toDate);
+			return orderRepository.findAllOrdersWithPagination(pageable, userId, status, fromDate, toDate);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public Optional<Order> getOrderById(int id) {
+		return this.orderRepository.findById(id);
+	}
+
+	@Override
+	public List<OrderDetail> getOrderDetails(int id) {
+		return this.orderDetailRepository.getOrderDetails(id);
 	}
 
 }

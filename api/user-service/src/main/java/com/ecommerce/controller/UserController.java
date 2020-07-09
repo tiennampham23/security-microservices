@@ -1,18 +1,22 @@
 package com.ecommerce.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ecommerce.dto.RegisterUserDTO;
 import com.ecommerce.model.Constants;
 import com.ecommerce.model.ResponseDataDTO;
+import com.ecommerce.model.UserModel;
 import com.ecommerce.service.UserService;
 
 @Controller
@@ -33,6 +37,23 @@ public class UserController {
 			response.setMessage(Constants.SUCCESS_MSG);
 		} catch (Exception e) {
 			response.setData(0);
+			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
+			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@GetMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody ResponseDataDTO<List<UserModel>> getUsers() {
+		ResponseDataDTO<List<UserModel>> response = new ResponseDataDTO<>();
+		try {
+			List<UserModel> result = userService.getAll();
+			response.setData(result);
+			response.setCode(Constants.SUCCESS_CODE);
+			response.setMessage(Constants.SUCCESS_MSG);
+		} catch (Exception e) {
+			response.setData(null);
 			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
 			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
 			e.printStackTrace();

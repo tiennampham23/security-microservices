@@ -6,7 +6,6 @@ import {AuthenticationApiService, AuthenticationService} from '@drop-shipping/sh
 import {UserModel} from '@drop-shipping/shared/data-transform-objects/public-api';
 import {takeUntil} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {ChangeAvatarComponent} from '../change-avatar/change-avatar.component';
 
 @Component({
   selector: 'app-user-profile',

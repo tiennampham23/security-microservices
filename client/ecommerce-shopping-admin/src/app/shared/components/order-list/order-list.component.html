@@ -22,8 +22,9 @@
             <div class="kt-form__control">
               <mat-form-field class="mat-form-field-fluid">
                 <mat-select formControlName="status" placeholder="Trạng thái">
-                  <mat-option *ngFor="let status of listStatus" [value]="status.id"
-                  >{{ status.name }}
+                  <mat-option [value]="''">Tất cả</mat-option>
+                  <mat-option *ngFor="let status of listStatus" [value]="status"
+                  >{{ status }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -31,14 +32,17 @@
           </div>
           <div class="col-md-2 kt-margin-bottom-10-mobile">
             <mat-form-field class="mat-form-field-fluid">
-              <label>
-                <input #searchInput formControlName="keywords" matInput placeholder="Tìm kiếm từ khóa">
-              </label>
+              <mat-select formControlName="userId" placeholder="Người dùng">
+                <mat-option [value]="''">Tất cả</mat-option>
+                <mat-option *ngFor="let user of users" [value]="user.id"
+                >{{ user.fullName }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
           <div class="col-md-2 kt-margin-bottom-10-mobile">
             <mat-form-field class="mat-form-field-fluid">
-              <input [matDatepicker]="startDate" formControlName="startDate" matInput placeholder="Từ ngày">
+              <input [matDatepicker]="startDate" formControlName="fromDate" matInput placeholder="Từ ngày">
               <mat-datepicker-toggle [for]="startDate" matSuffix></mat-datepicker-toggle>
               <mat-datepicker #startDate disabled="false"></mat-datepicker>
             </mat-form-field>
@@ -74,13 +78,6 @@
                 <mat-icon>update</mat-icon>
                 Cập nhập trạng thái
               </button>
-              <button (click)="onDownloadOrderPDF()"
-                      color="primary"
-                      class="mat-button-mt-4 ml-2"
-                      mat-raised-button matTooltip="Tải file orders">
-                <mat-icon>cloud_download</mat-icon>
-                Tải file orders
-              </button>
             </div>
           </div>
         </div>
@@ -92,14 +89,10 @@
     <!-- MATERIAL TABLE | Binded to datasources -->
     <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
     <div class="mat-table__wrapper">
-      <mat-table #sort1="matSort"
-                 #table
+      <mat-table #table
                  [dataSource]="dataSource"
                  class="lmat-elevation-z8"
-                 matSort
-                 matSortActive="createdAt"
-                 matSortDirection="asc"
-                 matSortDisableClear>
+      >
         <!-- Checkbox Column -->
 
         <!-- Table with selection -->
@@ -121,53 +114,52 @@
           </mat-cell>
         </ng-container>
 
-<!--        <ng-container matColumnDef="id">-->
-<!--          &lt;!&ndash; ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview &ndash;&gt;-->
-<!--          <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>-->
-<!--          <mat-cell *matCellDef="let order">{{order.id}}</mat-cell>-->
-<!--        </ng-container>-->
-
-        <ng-container matColumnDef="code">
-          <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
-          <mat-cell *matCellDef="let order">{{order.code}}</mat-cell>
+        <ng-container matColumnDef="ID">
+          <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.id}}</mat-cell>
         </ng-container>
 
 
-        <ng-container matColumnDef="username">
-          <mat-header-cell *matHeaderCellDef>User Name</mat-header-cell>
+        <ng-container matColumnDef="userId">
+          <mat-header-cell *matHeaderCellDef>Tài khoản đặt hàng</mat-header-cell>
           <mat-cell *matCellDef="let order">
-            <span class="kt-link">{{order.username}}</span>
+            <span class="kt-link">{{getUser(order.userId)}}</span>
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="deliveryAgent">
-          <mat-header-cell *matHeaderCellDef>Delivery Agent</mat-header-cell>
-          <mat-cell *matCellDef="let order">{{order.deliveryAgent}}</mat-cell>
+        <ng-container matColumnDef="createdDate">
+          <mat-header-cell *matHeaderCellDef>Thời gian đặt hàng</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.createdDate | date: 'dd/MM/yyyy'}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="statusName">
-          <mat-header-cell *matHeaderCellDef>statusName</mat-header-cell>
+        <ng-container matColumnDef="phone">
+          <mat-header-cell *matHeaderCellDef>Số điện thoại</mat-header-cell>
           <mat-cell *matCellDef="let order">
-            <span
-              class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{ getItemCssClassByStatus(order.statusName) }} kt-badge--wide">{{  order.statusName }}</span>
+<!--            <span-->
+<!--              class="kt-badge kt-badge&#45;&#45;inline kt-badge&#45;&#45;pill kt-badge&#45;&#45;{{ getItemCssClassByStatus(order.statusName) }} kt-badge&#45;&#45;wide">{{  order.statusName }}</span>
+-->
+            {{order.phone}}
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="deliveryCode">
-          <mat-header-cell *matHeaderCellDef>deliveryCode</mat-header-cell>
-          <mat-cell *matCellDef="let order">{{order.deliveryCode}}</mat-cell>
+        <ng-container matColumnDef="address">
+          <mat-header-cell *matHeaderCellDef>Địa chỉ đặt hàng</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.address}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="totalValue">
-          <mat-header-cell *matHeaderCellDef>Total Value</mat-header-cell>
-          <mat-cell *matCellDef="let order">{{order.totalValue | decimalFormat}}</mat-cell>
+        <ng-container matColumnDef="totalPrice">
+          <mat-header-cell *matHeaderCellDef>Tổng giá trị</mat-header-cell>
+          <mat-cell *matCellDef="let order">{{order.totalPrice | decimalFormat}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="createdAt">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>createdAt</mat-header-cell>
-          <mat-cell *matCellDef="let order">{{order.createdAt | date: 'dd/MM/yyyy'}}</mat-cell>
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef>Trạng thái</mat-header-cell>
+          <mat-cell *matCellDef="let order">
+            <span class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{ getItemCssClassByStatus(order.status) }} kt-badge--wide">
+              {{  order.status }}
+            </span>
+          </mat-cell>
         </ng-container>
-
         <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>
           <mat-cell *matCellDef="let order">
             <button [matMenuTriggerFor]="menu" mat-icon-button matTooltip="More actions">
               <mat-icon>more_vert</mat-icon>
@@ -179,9 +171,6 @@
               </button>
               <button
                 (click)="onChangeOrderStatus(order)"
-                *ngIf="(currentRole === 2 && (order?.statusName === 'Đang chờ'
-                  || order?.statusName === 'Huỷ'))
-                  || (currentRole === 1 && order?.statusName !== 'Huỷ')"
                 mat-menu-item>
                 <mat-icon>edit</mat-icon>
                 <span>Cập nhập trạng thái</span>

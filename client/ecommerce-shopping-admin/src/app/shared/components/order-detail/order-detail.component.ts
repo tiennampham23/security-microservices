@@ -79,7 +79,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     if (this.orderDetail) {
       let total = 0;
       this.orderDetail.listItem.forEach((item) => {
-        total += item.price * item.number;
+        // total += item.price * item.number;
       });
       return total;
     }

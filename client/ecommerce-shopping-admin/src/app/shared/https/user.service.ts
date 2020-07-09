@@ -3,6 +3,7 @@ import {BaseService} from './base.service';
 import {fmt, mapToFormData, mapToHttpParamsQuery} from '@drop-shipping/core/utils/helper.utils';
 
 const router = {
+  loadUsers: `/user/all`,
   loadUsersLevel2: `/users/childs`,
   changeBalance: `/users/change-balance/{userId}`,
   createUserLv2: `/users/create-user`,
@@ -23,6 +24,10 @@ export class UserService {
   constructor(
     private httpClient: BaseService
   ) {
+  }
+
+  loadUsers() {
+    return this.httpClient.get(router.loadUsers);
   }
 
   loadChildUsers(

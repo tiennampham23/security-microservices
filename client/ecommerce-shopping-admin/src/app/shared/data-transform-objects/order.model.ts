@@ -1,25 +1,21 @@
 import {ProductModel} from './product.model';
 
 export interface OrderModel {
-  id: string;
-  code: string;
-  userId: string;
-  username: string;
-  statusName: string;
-  createdAt: string;
-  deliveryAgent: string;
-  deliveryCode: string;
-  totalValue: number;
+  id: number;
+  userId: number;
+  totalPrice: number;
+  createdDate: string;
+  address: string;
+  phone: string;
+  status: string;
 }
 
 export interface OrderDetailModel {
-  id: string;
-  deliveryAgent: string;
-  deliveryCode: string;
-  createdAt: string;
-  status: string;
-  username: string;
-  listItem: ProductModel[];
+  id: number,
+  orderId: number,
+  productId: number,
+  totalPrice: number,
+  amount: number
 }
 
 export interface CreateOrderModel {

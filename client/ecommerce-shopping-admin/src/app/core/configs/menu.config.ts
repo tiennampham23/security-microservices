@@ -20,14 +20,6 @@ export class MenuConfig {
           bullet: 'dot',
         },
         {
-          title: 'Người dùng',
-          root: true,
-          icon: 'flaticon2-list-2',
-          page: '/user',
-          // translate: 'MENU.PRODUCT',
-          bullet: 'dot',
-        },
-        {
           title: 'Lịch sử đặt hàng',
           root: true,
           icon: 'flaticon2-list-2',

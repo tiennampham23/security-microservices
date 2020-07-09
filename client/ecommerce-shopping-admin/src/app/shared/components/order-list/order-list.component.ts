@@ -1,24 +1,21 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {OrderDataSource} from '@drop-shipping/shared/data-sources/order.datasource';
 import {OrderModel, UserModel} from '@drop-shipping/shared/data-transform-objects/public-api';
-import {StatusModel} from '@drop-shipping/shared/data-transform-objects/status.model';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
 import {Subscription} from 'rxjs';
 import {OrderService} from '@drop-shipping/shared/https/order.service';
 import {StatusService} from '@drop-shipping/shared/https/status.service';
-import {ESort, EStatusOrders} from '@drop-shipping/core/constants/app.constant';
+import {EStatusOrders, ListStatus} from '@drop-shipping/core/constants/app.constant';
 import {convertStrToYYMMdd} from '@drop-shipping/core/utils/helper.utils';
 import {distinctUntilChanged, skip} from 'rxjs/operators';
 import {ResponseHttp} from '@drop-shipping/shared/data-transform-objects/response-http.model';
 import {MatDialog} from '@angular/material/dialog';
 import {UpdateOrdersStatusComponent} from '../update-orders-status/update-orders-status.component';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '@drop-shipping/shared/https/authentication.service';
-import {saveAs} from 'file-saver';
 import {OrderDetailComponent} from "@drop-shipping/pages/order/components/order-detail/order-detail.component";
+import {UserService} from "@drop-shipping/shared/https/user.service";
 
 @Component({
   selector: 'app-order-list',
@@ -26,48 +23,44 @@ import {OrderDetailComponent} from "@drop-shipping/pages/order/components/order-
   styleUrls: ['./order-list.component.scss']
 })
 export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() userId: string;
   @Input() portletClass: string;
   dataSource: OrderDataSource;
   orders: OrderModel[];
-  listStatus: StatusModel[];
+  listStatus: string[] = ListStatus;
   currentRole: number;
   displayedColumns = [
     'select',
-    'code',
-    'username',
-    'deliveryAgent',
-    'deliveryCode',
-    'totalValue',
-    'createdAt',
-    'statusName',
+    'ID',
+    'userId',
+    'createdDate',
+    'phone',
+    'totalPrice',
+    'address',
+    'status',
     'actions'
   ];
   filterOrders: {
     userId: string,
-    statusId: string,
+    status: string,
     fromDate: string,
-    createdAt: string,
     toDate: string,
-    _keyword: string,
     page: string,
-    size: string
+    number: string
   } = {
     userId: null,
-    statusId: null,
-    fromDate: null,
-    createdAt: null,
-    toDate: null,
-    _keyword: null,
-    page: '1',
-    size: '5'
+    status: null,
+    fromDate: convertStrToYYMMdd(new Date(1, 0, 2018)),
+    toDate: convertStrToYYMMdd(new Date()),
+    page: '0',
+    number: '20'
   };
+
+  users: UserModel[];
 
   searchOrderFormGroup: FormGroup;
 
   selection = new SelectionModel<OrderModel>(true, []);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild('sort1', {static: true}) sort: MatSort;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -76,24 +69,19 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
     private orderService: OrderService,
     private statusService: StatusService,
     private formBuilder: FormBuilder,
-    private authService: AuthenticationService
+    private userService: UserService
   ) {
     this.initialForm();
   }
 
   ngOnChanges() {
-    if (this.userId) {
-      this.filterOrders.userId = this.userId;
-    }
   }
 
   ngOnInit(): void {
     this.dataSource = new OrderDataSource(this.orderService);
     this.loadListOrders(this.filterOrders);
-    this.loadListStatus();
     this.subscribePaginator();
-    this.subscribeSort();
-    this.loadCurrentRole();
+    this.loadUsers();
   }
 
   ngOnDestroy(): void {
@@ -132,9 +120,11 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onSearchOrders() {
-    this.filterOrders._keyword = this.searchOrderFormGroup.controls.keywords.value;
-    this.filterOrders.statusId = this.searchOrderFormGroup.controls.status.value;
-    this.filterOrders.fromDate = convertStrToYYMMdd(this.searchOrderFormGroup.controls.startDate.value);
+    this.filterOrders.page = '0';
+    this.filterOrders.number = '20';
+    this.filterOrders.status = this.searchOrderFormGroup.controls.status.value;
+    this.filterOrders.userId = this.searchOrderFormGroup.controls.userId.value;
+    this.filterOrders.fromDate = convertStrToYYMMdd(this.searchOrderFormGroup.controls.fromDate.value);
     this.filterOrders.toDate = convertStrToYYMMdd(this.searchOrderFormGroup.controls.endDate.value);
 
     this.loadListOrders(this.filterOrders);
@@ -153,24 +143,25 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
     this.openDialogUpdateStatus(orders);
   }
 
+
+  getUser(userId: number) {
+    if (this.users) {
+      let userName = null;
+      this.users.forEach(user => {
+        if (userId ===  user.id) {
+          userName =  user.fullName;
+        }
+      });
+      return userName;
+    }
+  }
+
   onChangeOrderStatus(order: OrderModel) {
     this.openDialogUpdateStatus([order]);
   }
 
   onRedirectOrder() {
     return this.router.navigateByUrl(`/order-product`);
-  }
-
-  onDownloadOrderPDF() {
-    const listId = this.selection.selected.map((order) => order.id);
-    let params = `["` + listId.join(`","`) + `"]`;
-    const filter = {
-      listId: params
-    };
-    const downloadFileSubscription = this.orderService.downloadOrderPdf(filter).subscribe((res) => {
-      saveAs(res, `Đặt hàng ngày ${convertStrToYYMMdd(new Date())}.pdf`);
-    });
-    this.subscriptions.push(downloadFileSubscription);
   }
 
   private openDialogUpdateStatus(orders: OrderModel[]) {
@@ -190,13 +181,11 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
 
   private loadListOrders(filterOrders: {
     userId: string,
-    statusId: string,
+    status: string,
     fromDate: string,
-    createdAt: string,
     toDate: string,
-    _keyword: string,
     page: string,
-    size: string
+    number: string
   }) {
     this.dataSource.loadOrders(filterOrders);
     const entitiesSubscription = this.dataSource.entitiesSubject.pipe(
@@ -209,6 +198,13 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
     this.selection.clear();
   }
 
+  private loadUsers() {
+    const loadUsersSubscription = this.userService.loadUsers().subscribe((res: ResponseHttp<UserModel[]>) => {
+      this.users = res.data;
+    });
+    this.subscriptions.push(loadUsersSubscription);
+  }
+
   private subscribePaginator() {
     const paginatorSubscription = this.paginator.page.subscribe(($event) => {
       this.filterOrders.page = ($event.pageIndex + 1).toString();
@@ -217,47 +213,18 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
     this.subscriptions.push(paginatorSubscription);
   }
 
-  private subscribeSort() {
-    const sortSubscription = this.sort.sortChange.subscribe(($event) => {
-      if ($event.direction === 'desc') {
-        this.filterOrders.createdAt = ESort.DESC;
-      } else {
-        this.filterOrders.createdAt = ESort.ASC;
-      }
-      this.paginator.pageIndex = 0;
-      this.filterOrders.page = '1';
-      this.loadListOrders(this.filterOrders);
-    });
-    this.subscriptions.push(sortSubscription);
-  }
-
-  private loadListStatus() {
-    const statusSubscription = this.statusService.loadListStatus().subscribe((res: ResponseHttp<StatusModel[]>) => {
-      this.listStatus = res.data;
-    });
-    this.subscriptions.push(statusSubscription);
-  }
-
   private initialForm() {
     this.searchOrderFormGroup = this.formBuilder.group({
       status: [''],
-      startDate: {
-        value: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
+      fromDate: {
+        value: new Date(1,0,2018),
         disabled: true
       },
       endDate: {
         value: new Date(),
         disabled: true
       },
-      keywords: ['']
-    });
-  }
-
-  private loadCurrentRole() {
-    this.authService.currentUser.subscribe((user: UserModel) => {
-      if (user) {
-        this.currentRole = user.role;
-      }
+      userId: ['']
     });
   }
 }

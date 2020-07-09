@@ -5,7 +5,7 @@ import {Logger} from '@drop-shipping/core/logger/public-api';
 import {CategoryService, ProductService, SupplierService} from '@drop-shipping/shared/https/public-api';
 import {
   CategoryModel,
-  ProductDetailModel, ProductModel,
+  ProductModel,
   ResponseHttp,
   SupplierModel
 } from '@drop-shipping/shared/data-transform-objects/public-api';
@@ -27,7 +27,7 @@ export class ProductBusinessComponent implements OnInit, OnDestroy {
   categories: CategoryModel[];
   suppliers: SupplierModel[];
 
-  productDetail: ProductDetailModel;
+  // productDetail: ProductDetailModel;
   productId: string;
   typeAction = 'CREATE';
   image: File;
@@ -126,15 +126,15 @@ export class ProductBusinessComponent implements OnInit, OnDestroy {
 
 
   private loadProductById(productId: string) {
-    const product$ = this.productService.loadProductById(productId).pipe(takeUntil(this.unsubscribe));
-    product$.subscribe((res: {
-      data: ProductDetailModel
-    }) => {
-      this.productDetail = res.data;
-      if (this.productDetail) {
-        this.setValuesForm(this.productDetail);
-      }
-    });
+    // const product$ = this.productService.loadProductById(productId).pipe(takeUntil(this.unsubscribe));
+    // product$.subscribe((res: {
+    //   data: ProductDetailModel
+    // }) => {
+    //   this.productDetail = res.data;
+    //   if (this.productDetail) {
+    //     this.setValuesForm(this.productDetail);
+    //   }
+    // });
   }
 
   private setValuesForm(productDetail: ProductModel) {
