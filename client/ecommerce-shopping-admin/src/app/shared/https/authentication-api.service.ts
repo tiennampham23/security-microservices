@@ -6,7 +6,7 @@ import {UserModel} from '@drop-shipping/shared/data-transform-objects/public-api
 
 const router = {
   login: `/auth`,
-  loadCurrentUser: `/get-current-user`,
+  loadCurrentUser: `/whoiam`,
   register: `/auth/signUp`
 };
 @Injectable({
@@ -39,7 +39,7 @@ export class AuthenticationApiService {
   return this.httpClient.post(router.register, body);
   }
 
-  loadCurrentUser(): Observable<UserModel> {
-    return this.httpClient.get(router.loadCurrentUser) as Observable<UserModel>;
+  loadCurrentUser() {
+    return this.httpClient.get(router.loadCurrentUser);
   }
 }

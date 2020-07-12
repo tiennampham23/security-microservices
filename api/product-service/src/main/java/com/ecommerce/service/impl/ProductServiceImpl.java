@@ -33,6 +33,8 @@ public class ProductServiceImpl implements ProductService {
 		if (keywords == null) {
 			keywords = "";
 		}
+		System.out.println(pageable.getPageNumber());
+		System.out.println(pageable.getPageSize());
 		return productRepository.findAllByProductNameLike(pageable, "%" + keywords + "%");
 	}
 
@@ -97,6 +99,7 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> getProductsByCategoryId(String categoryId) {
 		List<Product> products = null;
 		try {
+			System.out.println(categoryId);
 			products = productRepository.getProductsByCategoryId(categoryId);
 		} catch (Exception e) {
 			e.printStackTrace();

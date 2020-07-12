@@ -1,0 +1,45 @@
+<div class="single">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 single-left">
+        <div class="flexslider">
+          <div class="flex-viewport" style="overflow: hidden; position: relative;">
+            <img src="{{product?.thumbnail}}" class="img-responsive w-100" style="max-height: 250px"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 single-right" *ngIf="product">
+        <h3>{{product?.productName}}</h3>
+        <div class="description">
+          <h5>Số lượng</h5>
+          <p>{{product?.amount}}</p>
+        </div>
+        <div class="description">
+          <h5>Thể loại sản phẩm</h5>
+          <p>{{getCategoryName(product.categoryId) }}</p>
+        </div>
+        <div class="description">
+          <h5>Nhà cung cấp</h5>
+          <p>{{ getSupplierName(product.supplierId) }}</p>
+        </div>
+        <div class="description">
+          <h5>Giá thành</h5>
+          <p>{{product?.price | currency : 'VND' : '' : '1.0'}} đ</p>
+        </div>
+        <button type="submit" class="btn btn-success" (click)="addProductToCart(product,1)">Thêm vào giỏ hàng</button>
+      </div>
+      <div class="clearfix"> </div>
+    </div>
+  </div>
+</div>
+
+<div class="additional_info">
+  <div class="container">
+    <div id="horizontalTab1" style="display: block; width: 100%; margin: 0px;">
+      <div class="additional_info_grid">
+        <h3>Thông tin chi tiết sản phẩm</h3>
+        <div [innerHTML]="bypassSecurityTrustHtml(product?.description)"></div>
+      </div>
+    </div>
+  </div>
+</div>

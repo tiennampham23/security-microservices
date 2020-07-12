@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -85,39 +84,6 @@ public class ProductController {
 		return response;
 	}
 	
-	@GetMapping(value = "/get-products-by-category", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody ResponseDataDTO<List<Product>> getProductsByCategory(String categoryId) {
-		ResponseDataDTO<List<Product>> response = new ResponseDataDTO<>();
-		try {
-			response.setData(productService.getProductsByCategoryId(categoryId));
-			response.setCode(Constants.SUCCESS_CODE);
-			response.setMessage(Constants.SUCCESS_MSG);
-		} catch (Exception e) {
-			// TODO: handle exception
-			response.setData(null);
-			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
-			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
-		}
-
-		return response;
-	}
-	
-	@GetMapping(value = "/get-products-by-supplier", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody ResponseDataDTO<List<Product>> getProductsBySupplier(String supplierId) {
-		ResponseDataDTO<List<Product>> response = new ResponseDataDTO<>();
-		try {
-			response.setData(productService.getProductsByCategoryId(supplierId));
-			response.setCode(Constants.SUCCESS_CODE);
-			response.setMessage(Constants.SUCCESS_MSG);
-		} catch (Exception e) {
-			// TODO: handle exception
-			response.setData(null);
-			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
-			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
-		}
-
-		return response;
-	}
 	
 	@PostMapping(value = "/create", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public @ResponseBody ResponseDataDTO<Integer> createProduct(@ModelAttribute ProductDTO product) {

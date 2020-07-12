@@ -1,0 +1,42 @@
+<!-- navigation -->
+<div class="navigation">
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-collapse" >
+        <ul class="nav navbar-nav d-flex flex-row align-items-center" style="height: 50px">
+          <li class="cursor-pointer">
+            <a [routerLink]="['/home']">Trang chủ</a>
+          </li>
+          <!-- Mega Menu -->
+          <li class="cursor-pointer">
+            <a [routerLink]="['/order']" >Lịch sử đặt hàng</a>
+          </li>
+          <li class="cursor-pointer">
+            <a [routerLink]="['/checkout']">
+              Giỏ hàng({{cart.totalItems}})
+            </a>
+          </li>
+          <li class="cursor-pointer" *ngIf="!currentUser">
+            <a [routerLink]="['/auth/login']">
+              Đăng nhập
+            </a>
+          </li>
+          <li class="cursor-pointer" *ngIf="currentUser">
+            <a (click)="logout()">
+              {{currentUser}} (Đăng xuất)
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+<!-- //navigation -->
+<!-- banner -->
+<div class="banner">
+  <div class="container">
+    <h3>Ecommerce <span>Store</span></h3>
+  </div>
+</div>
+<!-- //banner -->

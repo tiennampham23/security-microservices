@@ -2,16 +2,16 @@
   <app-portlet-header [class]="'kt-portlet__head--lg'" [sticky]="true" [title]="getComponentTitle()"
                       [viewLoading$]="loading$">
     <ng-container ktPortletTools>
-      <button class="btn btn-secondary kt-margin-r-10"
-              mat-raised-button matTooltip="Quay lại"
-              [routerLink]="'/product'"
+      <button [routerLink]="'/product'"
+              class="btn btn-secondary kt-margin-r-10" mat-raised-button
+              matTooltip="Quay lại"
       >
         <i class="la la-arrow-left"></i>
         <span class="kt-hidden-mobile">Quay lại</span>
       </button>
-      <button class="btn btn-primary kt-margin-r-10" color="primary" mat-raised-button
-         matTooltip="Lưu"
-          (click)="onSaveProduct()"
+      <button (click)="onSaveProduct()" class="btn btn-primary kt-margin-r-10" color="primary"
+              mat-raised-button
+              matTooltip="Lưu"
       >
         <span class="kt-hidden-mobile">Lưu</span>
       </button>
@@ -35,9 +35,8 @@
           <div class="row">
             <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Mô tả sản phẩm(*)</mat-label>
             <div class="col-md-10 kt-margin-bottom-10-mobile">
-              <mat-form-field class="mat-form-field-fluid">
-                <textarea formControlName="description" matInput placeholder="Nhập mô tả sản phẩm" rows="5"></textarea>
-              </mat-form-field>
+              <quill-editor [styles]="{ height: '300px' }" formControlName="description">
+              </quill-editor>
             </div>
           </div>
         </div>
@@ -46,10 +45,10 @@
             <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Thể loại sản phẩm(*)</mat-label>
             <div class="col-md-10 kt-margin-bottom-10-mobile">
               <mat-form-field class="mat-form-field-fluid">
-                <mat-select placeholder="Thể loại sản phẩm" formControlName="categoryId">
+                <mat-select formControlName="categoryId" placeholder="Thể loại sản phẩm">
                   <mat-option *ngFor="let category of categories" [value]="category.id">
                     {{
-                      category.categoryName
+                    category.categoryName
                     }}
                   </mat-option>
                 </mat-select>
@@ -62,7 +61,7 @@
             <mat-label class="col-md-2 kt-margin-bottom-10-mobile product__description">Nhà cung cấp(*)</mat-label>
             <div class="col-md-10 kt-margin-bottom-10-mobile">
               <mat-form-field class="mat-form-field-fluid">
-                <mat-select placeholder="Nhà cung cấp" formControlName="supplierId">
+                <mat-select formControlName="supplierId" placeholder="Nhà cung cấp">
                   <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
                     {{
                     supplier.supplierName

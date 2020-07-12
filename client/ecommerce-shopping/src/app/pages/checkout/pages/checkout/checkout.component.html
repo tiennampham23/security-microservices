@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="row checkout">
+    <div class="col-md-12 col-lg-8">
+      <div class="items" *ngIf="getTotalItems() > 0">
+        <h3>Danh sách giỏ hàng</h3>
+        <div class="product" *ngFor="let product of cart.items">
+          <div class="row">
+            <div class="col-md-3">
+              <img class="img-responsive w-100" src="{{product?.thumbnail}}">
+            </div>
+            <div class="col-md-8">
+              <div class="info">
+                <div class="row">
+                  <div class="col-md-5">
+                    <div class="product-info">
+                      <div class="product-info">
+                        <label>Tên sản phẩm:</label>
+                        <p>{{product?.productName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 quantity">
+                    <label for="quantity">Số lượng:</label>
+                    <input id="quantity" type="number" value="{{product?.amount}}" class="form-control quantity-input"
+                           (input)="changeValue($event, product)">
+                  </div>
+                  <div class="col-md-3 price">
+                    <label for="quantity">Giá:</label>
+                    <p>{{product?.price | decimalFormat}} đ</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-8" *ngIf="getTotalItems() === 0" style="text-align: center;line-height: 50px;">
+      <img src="../assets/images/mascot.png"/>
+      <p> Không có sản phẩm nào trong giỏ hàng của bạn.</p>
+      <a class="btn btn-yellow" [routerLink]="['/home']">Tiếp tục mua sắm</a>
+    </div>
+    <div class="col-md-12 col-lg-4" *ngIf="products?.length > 0">
+      <div class="summary" [formGroup]="customerFormGroup">
+        <h3>Thanh toán</h3>
+        <div class="summary-item">
+          <label class="text">Tên khách hàng:</label>
+          <p class="price">
+            {{
+              currentUser
+            }}
+          </p>
+        </div>
+        <div class="summary-item">
+          <label class="text">Địa chỉ:</label>
+          <p class="price">
+            <input placeholder="Địa chỉ" formControlName="address" class="w-100"/>
+          </p>
+        </div>
+        <div class="summary-item">
+          <label class="text">Số điện thoại:</label>
+          <p class="price">
+            <input placeholder="Số điện thoại" formControlName="phone" class="w-100"/>
+          </p>
+        </div>
+        <div class="summary-item"><label class="text">Tổng tiền:</label>
+          <p class="price">${{ getTotalPrice() | decimalFormat}} đ</p>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg btn-block" (click)="checkout()">Tiến hành thanh toán</button>
+      </div>
+    </div>
+  </div>
+</div>

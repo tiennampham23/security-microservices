@@ -1,0 +1,28 @@
+<div class="container mt-4">
+  <div class="heading">Đơn hàng của tôi</div>
+</div>
+<div class="inner container">
+  <table>
+    <thead>
+    <tr>
+      <th>Mã đơn hàng</th>
+      <th>Ngày mua</th>
+      <th>Địa chỉ</th>
+      <th>Số điện thoại</th>
+      <th>Tổng tiền</th>
+      <th>Trạng thái đơn hàng</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of orders">
+      <td><a>{{order.id}}</a></td>
+      <td>{{order.createdDate | date: 'dd/MM/yyyy'}}</td>
+      <td>{{order.address}}</td>
+      <td>{{order.phone}}</td>
+      <td>{{order.totalPrice | decimalFormat}} VNĐ</td>
+      <td>{{order.status}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

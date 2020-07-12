@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,7 +66,8 @@ public class OrderController {
 	}
 
 	@GetMapping(value = "/page", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public @ResponseBody ResponseDataDTO<Page<Order>> getPageableProduct(Pageable pageable, String userId, String status, String fromDate, String toDate) {
+	public @ResponseBody ResponseDataDTO<Page<Order>> getPageableProduct(Pageable pageable, String userId,
+			String status, String fromDate, String toDate) {
 		ResponseDataDTO<Page<Order>> response = new ResponseDataDTO<>();
 
 		try {
@@ -83,7 +83,37 @@ public class OrderController {
 		}
 		return response;
 	}
-	
+
+	@GetMapping(value = "/get-my-orders", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody ResponseDataDTO<Page<Order>> getMyOrders(Pageable pageable, String status, String fromDate,
+			String toDate, @RequestHeader Map<String, String> headers) {
+		HttpHeaders rqHeaders = new HttpHeaders();
+		rqHeaders.setContentType(MediaType.APPLICATION_JSON);
+		rqHeaders.set("Authorization", headers.get("authorization"));
+		HttpEntity<Object> entity = new HttpEntity<Object>("parameters", rqHeaders);
+		ResponseEntity<String> userName = restTemplate.exchange("http://zuul-server/get-current-user", HttpMethod.GET,
+				entity, String.class);
+
+		ResponseEntity<Integer> userId = restTemplate.exchange(
+				"http://user-service/get-user-by-user-name?userName={userName}", HttpMethod.GET, entity, Integer.class,
+				userName.getBody());
+		
+		ResponseDataDTO<Page<Order>> response = new ResponseDataDTO<>();
+
+		try {
+			Page<Order> result = orderService.getPageable(pageable, userId.getBody().toString(), status, fromDate, toDate);
+			response.setData(result);
+			response.setCode(Constants.SUCCESS_CODE);
+			response.setMessage(Constants.SUCCESS_MSG);
+		} catch (Exception e) {
+			response.setData(null);
+			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
+			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
+			e.printStackTrace();
+		}
+		return response;
+	}
+
 	@GetMapping(value = "/getbyid/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody ResponseDataDTO<Optional<Order>> getOrderById(@PathVariable("id") int id) {
 		ResponseDataDTO<Optional<Order>> response = new ResponseDataDTO<>();
@@ -100,7 +130,6 @@ public class OrderController {
 
 		return response;
 	}
-	
 
 	@GetMapping(value = "/get-detail-by-id/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody ResponseDataDTO<List<OrderDetail>> getOrderDetailById(@PathVariable("id") int id) {
@@ -118,7 +147,6 @@ public class OrderController {
 
 		return response;
 	}
-
 
 	@PostMapping(value = "/create", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })

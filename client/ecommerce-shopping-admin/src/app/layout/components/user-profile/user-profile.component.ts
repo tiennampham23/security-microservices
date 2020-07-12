@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {Router} from '@angular/router';
 import {ELocalStorage} from '@drop-shipping/core/constants/public-api';
 import {AuthenticationApiService, AuthenticationService} from '@drop-shipping/shared/https/public-api';
-import {UserModel} from '@drop-shipping/shared/data-transform-objects/public-api';
+import {ResponseHttp, UserModel} from '@drop-shipping/shared/data-transform-objects/public-api';
 import {takeUntil} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -13,7 +13,7 @@ import {MatDialog} from '@angular/material/dialog';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-  currentUser: UserModel;
+  currentUser: string;
 
   @Input() avatar = true;
   @Input() greeting = true;
@@ -48,9 +48,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   private loadCurrentUser() {
     const currentUser$ = this.authenticationService.loadCurrentUser().pipe(takeUntil(this.unsubscribe));
-    currentUser$.subscribe((res) => {
-      this.currentUser = res;
-      this.authService.changeCurrentUser(res);
+    currentUser$.subscribe((res: ResponseHttp<string>) => {
+      this.currentUser = res.data;
+      this.authService.changeCurrentUser(res.data);
     });
   }
 }

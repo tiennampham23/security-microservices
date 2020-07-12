@@ -1,5 +1,6 @@
 package com.ecommerce.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 			for (OrderProductDTO orderProduct : order.getListProducts()) {
 				totalPrices += orderProduct.getTotalPrice();
 			}
-			Order newOrder = new Order(currentUser, totalPrices, DateTimeExtension.getCurrentDate(), order.getAddress(), order.getPhone(), Status.SUCCESS.getMessage());
+			Order newOrder = new Order(currentUser, totalPrices, DateTimeExtension.getCurrentDate(), order.getAddress(), order.getPhone(), Status.WAITING.getMessage());
 			Order savedOrder =orderRepository.save(newOrder);
 		
 			for (OrderProductDTO orderProduct : order.getListProducts()) {
@@ -86,9 +87,12 @@ public class OrderServiceImpl implements OrderService {
 			if (userId == null) {
 				userId = "";
 			}
-			System.out.println(fromDate);
-			System.out.println(toDate);
-			return orderRepository.findAllOrdersWithPagination(pageable, userId, status, fromDate, toDate);
+			String plusFromDate = LocalDate.parse(fromDate).plusDays(-1).toString();
+			String plusToDate = LocalDate.parse(toDate).plusDays(1).toString();
+			
+			System.out.println(plusFromDate);
+			System.out.println(plusToDate);
+			return orderRepository.findAllOrdersWithPagination(pageable, userId, status, plusFromDate, plusToDate);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

@@ -13,7 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Query(value = "select * from product p where p.categoryid = ?1", nativeQuery = true)
 	List<Product> getProductsByCategoryId(String categoryId);
 	
-	@Query(value = "select * from product p where p.supplier = ?1", nativeQuery = true)
+	@Query(value = "select * from product p where p.supplierid = ?1", nativeQuery = true)
 	List<Product> getProductsBySupplierId(String supplierId);
 	
 	Page<Product> findAllByProductNameLike(Pageable pageable, String keywords);

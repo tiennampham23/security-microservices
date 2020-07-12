@@ -1,9 +1,9 @@
 <!--begin::Head-->
-<div class="kt-login__head">
-  <span class="kt-login__signup-label">Don't have an account yet?</span>&nbsp;&nbsp;
-  <a href="javascript:" routerLink="/auth/register"
-     class="kt-link kt-login__signup-link">{{ 'AUTH.GENERAL.SIGNUP_BUTTON' | translate }}</a>
-</div>
+<!--<div class="kt-login__head">-->
+<!--  <span class="kt-login__signup-label">Don't have an account yet?</span>&nbsp;&nbsp;-->
+<!--  <a href="javascript:" routerLink="/auth/register"-->
+<!--     class="kt-link kt-login__signup-link">{{ 'AUTH.GENERAL.SIGNUP_BUTTON' | translate }}</a>-->
+<!--</div>-->
 <!--end::Head-->
 
 <!--begin::Body-->
@@ -11,15 +11,15 @@
   <!--begin::Signin-->
   <div class="kt-login__form">
     <div class="kt-login__title">
-      <h3>Sign In</h3>
+      <h3>Đăng nhập</h3>
     </div>
     <!--begin::Form-->
     <form class="kt-form" [formGroup]="loginForm" autocomplete="off">
       <div class="form-group">
         <mat-form-field>
-          <mat-label>{{ 'AUTH.INPUT.USERNAME' | translate }}</mat-label>
+          <mat-label>Tài khoản</mat-label>
           <label>
-            <input matInput type="text" placeholder="{{ 'AUTH.INPUT.USERNAME' | translate }}" formControlName="userName"
+            <input matInput type="text" placeholder="Tài khoản" formControlName="userName"
                    autocomplete="off"/>
           </label>
           <mat-error *ngIf="isControlHasError('userName','required')">
@@ -35,7 +35,7 @@
       </div>
       <div class="form-group">
         <mat-form-field>
-          <mat-label>{{ 'AUTH.INPUT.PASSWORD' | translate }}</mat-label>
+          <mat-label>Mật khẩu</mat-label>
           <label>
             <input matInput type="password" placeholder="{{ 'AUTH.INPUT.PASSWORD' | translate }}"
                    formControlName="password" autocomplete="off"/>
@@ -53,19 +53,18 @@
       </div>
       <div class="form-group">
         <mat-checkbox name="rememberMe" formControlName="rememberMe">
-          <strong>{{ 'AUTH.LOGIN.REMEMBER_ME' | translate }}</strong>
+          <strong>Ghi nhớ</strong>
         </mat-checkbox>
       </div>
       <!--begin::Action-->
       <div class="kt-login__actions">
-        <a href="javascript:" routerLink="/auth/forgot-password" class="kt-link kt-login__link-forgot">
-          {{ 'AUTH.GENERAL.FORGOT_BUTTON' | translate }}
-        </a>
         <button (click)="submit()"
                 [disabled]="loginForm.invalid"
                 [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}"
                 id="kt_login_signin_submit"
-                class="btn btn-primary btn-elevate kt-login__btn-primary">{{ 'AUTH.LOGIN.BUTTON' | translate }}</button>
+                class="btn btn-primary btn-elevate kt-login__btn-primary">
+          Đăng nhập
+        </button>
       </div>
       <!--end::Action-->
     </form>

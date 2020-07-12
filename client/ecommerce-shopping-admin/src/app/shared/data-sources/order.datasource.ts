@@ -25,7 +25,7 @@ export class OrderDataSource extends BaseDataSource {
     fromDate: string,
     toDate: string,
     page: string,
-    number: string
+    size: string
   }) {
     this.loading$.next(true);
     this.orderService.loadOrders(queryParams)

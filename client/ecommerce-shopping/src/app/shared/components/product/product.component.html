@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-md-3 agileinfo_new_products_grid" *ngFor="let product of listProducts">
+    <div class="agile_ecommerce_tab_left agileinfo_new_products_grid1" (click)="viewProductDetail(product)">
+      <div class="hs-wrapper hs-wrapper1">
+        <img src="{{product?.thumbnail}}" alt=" " class="img-responsive img-product" />
+      </div>
+      <h5><a class="product__title">{{product?.productName}}</a></h5>
+      <div class="simpleCart_shelfItem">
+        <p class="product__price">
+          {{product?.price  | decimalFormat}} đ
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>

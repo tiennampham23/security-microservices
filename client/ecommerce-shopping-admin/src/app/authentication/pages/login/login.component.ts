@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         }),
         catchError(err => {
           logger.debug(err);
-          this.snackbarService.showError(this.translate.instant('AUTH.VALIDATION.INVALID_LOGIN'));
+          this.snackbarService.showError('Đăng nhập thất bại');
           return of(null);
         }),
         takeUntil(this.unsubscribe),
@@ -112,7 +112,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
     auth$.subscribe((credentials: Credentials) => {
       if (credentials) {
-        this.snackbarService.showSuccess(this.translate.instant('AUTH.VALIDATION.VALID_LOGIN'));
+        this.snackbarService.showSuccess('Đăng nhập thành công');
         this.authLogicService.login(credentials, controls.rememberMe.value);
         return this.router.navigateByUrl('/');
       }

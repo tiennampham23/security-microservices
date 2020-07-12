@@ -45,14 +45,14 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
     fromDate: string,
     toDate: string,
     page: string,
-    number: string
+    size: string
   } = {
     userId: null,
     status: null,
-    fromDate: convertStrToYYMMdd(new Date(1, 0, 2018)),
+    fromDate: convertStrToYYMMdd(new Date(2018, 1, 1)),
     toDate: convertStrToYYMMdd(new Date()),
     page: '0',
-    number: '20'
+    size: '20'
   };
 
   users: UserModel[];
@@ -121,7 +121,7 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
 
   onSearchOrders() {
     this.filterOrders.page = '0';
-    this.filterOrders.number = '20';
+    this.filterOrders.size = '20';
     this.filterOrders.status = this.searchOrderFormGroup.controls.status.value;
     this.filterOrders.userId = this.searchOrderFormGroup.controls.userId.value;
     this.filterOrders.fromDate = convertStrToYYMMdd(this.searchOrderFormGroup.controls.fromDate.value);
@@ -185,7 +185,7 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
     fromDate: string,
     toDate: string,
     page: string,
-    number: string
+    size: string
   }) {
     this.dataSource.loadOrders(filterOrders);
     const entitiesSubscription = this.dataSource.entitiesSubject.pipe(
@@ -217,7 +217,7 @@ export class OrderListComponent implements OnChanges, OnInit, OnDestroy {
     this.searchOrderFormGroup = this.formBuilder.group({
       status: [''],
       fromDate: {
-        value: new Date(1,0,2018),
+        value: new Date(2018,1,1),
         disabled: true
       },
       endDate: {

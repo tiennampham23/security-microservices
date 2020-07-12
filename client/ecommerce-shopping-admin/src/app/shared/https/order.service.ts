@@ -28,7 +28,7 @@ export class OrderService {
       fromDate: string,
       toDate: string,
       page: string,
-      number: string
+      size: string
     }
   ) {
     const params = mapToHttpParamsQuery(filter);

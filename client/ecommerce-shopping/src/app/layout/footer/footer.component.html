@@ -1,0 +1,51 @@
+<!-- footer -->
+<div class="footer">
+  <div class="container">
+    <div class="w3_footer_grids d-flex">
+      <div class="col-md-3 w3_footer_grid">
+        <h3>Liên hệ</h3>
+        <p>Để nhận giúp đỡ, vui lòng liên hệ</p>
+        <ul class="address">
+          <li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>234 Hoang Quoc Viet, <span>Ha Noi.</span></li>
+          <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a>Ecommerce Shop</a></li>
+          <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>+1234 567 567</li>
+        </ul>
+      </div>
+      <div class="col-md-3 w3_footer_grid">
+        <h3>Trang chủ</h3>
+        <ul class="info">
+          <li><a href="about.html">Về chúng tôi</a></li>
+          <li><a href="mail.html">Liên hệ với chúng tôi</a></li>
+          <li><a href="faq.html">FAQ's</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 w3_footer_grid">
+        <h3>Thể loại</h3>
+        <ul class="info">
+          <li *ngFor="let category of categories"><a href="products.html">
+            {{category.categoryName}}
+          </a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 w3_footer_grid">
+        <h3>Thông tin</h3>
+        <ul class="info">
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="products.html">Sản phẩm hot trong ngày</a></li>
+        </ul>
+      </div>
+      <div class="clearfix"> </div>
+    </div>
+  </div>
+  <div class="footer-copy">
+    <div class="footer-copy1">
+      <div class="footer-copy-pos">
+        <a href="#home1" class="scroll"><img src="../assets/images/arrow.png" alt=" " class="img-responsive" /></a>
+      </div>
+    </div>
+    <div class="container">
+      <p>&copy; 2020 Ecommerce Shop <a href="http://w3layouts.com/">Ecommerce Shop</a></p>
+    </div>
+  </div>
+</div>
+<!-- //footer -->

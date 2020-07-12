@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/styles/base";
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+
+$color-primary: #005aab;
+$color-success: #019843;
+$color-critical: #d71c32;
+$color-warning: #eec000;
+$color-support-blue: #00b8ee;
+$color-secondary: #05693f;
+$color-highlight-control: #c3d8ea;
+$color-positive: #00a268;
+
+.snack-bar-message {
+  padding: 4px 16px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+
+  .snack-bar-container {
+    color: #fff !important;
+  }
+
+  &.information {
+    background-color: $color-support-blue;
+  }
+
+  &.success {
+    background-color: $color-success;
+  }
+
+  &.warning {
+    background-color: $color-warning;
+  }
+
+  &.error {
+    background-color: $color-critical;
+  }
+}

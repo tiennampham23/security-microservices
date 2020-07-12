@@ -1,0 +1,31 @@
+<app-list-products [title]="'Danh sách sản phẩm'" [listProducts]="products"></app-list-products>
+
+<div class="new-products">
+  <div class="container">
+    <h3>Sản phẩm theo thể loại</h3>
+    <ul class="list-unstyled list-categories justify-content-center" style="display: flex">
+      <li *ngFor="let category of categories" class="category" (click)="loadProductsByCategory(category)">
+        <button mat-button mat-flat-button color="primary">{{category.categoryName}}</button>
+      </li>
+    </ul>
+    <div class="agileinfo_new_products_grids">
+      <app-product [listProducts]="productsCategory"></app-product>
+      <div class="clearfix"> </div>
+    </div>
+  </div>
+</div>
+
+<div class="new-products">
+  <div class="container">
+    <h3>Sản phẩm theo nhà cung cấp</h3>
+    <ul class="list-unstyled list-categories justify-content-center" style="display: flex">
+      <li *ngFor="let supplier of suppliers" class="category" (click)="loadProductsBySupplier(supplier)">
+        <button mat-button mat-flat-button color="primary">{{supplier.supplierName}}</button>
+      </li>
+    </ul>
+    <div class="agileinfo_new_products_grids">
+      <app-product [listProducts]="productsSupplier"></app-product>
+      <div class="clearfix"> </div>
+    </div>
+  </div>
+</div>

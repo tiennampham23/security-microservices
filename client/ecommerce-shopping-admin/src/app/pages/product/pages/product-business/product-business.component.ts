@@ -27,7 +27,7 @@ export class ProductBusinessComponent implements OnInit, OnDestroy {
   categories: CategoryModel[];
   suppliers: SupplierModel[];
 
-  // productDetail: ProductDetailModel;
+  productDetail: ProductModel;
   productId: string;
   typeAction = 'CREATE';
   image: File;
@@ -126,15 +126,15 @@ export class ProductBusinessComponent implements OnInit, OnDestroy {
 
 
   private loadProductById(productId: string) {
-    // const product$ = this.productService.loadProductById(productId).pipe(takeUntil(this.unsubscribe));
-    // product$.subscribe((res: {
-    //   data: ProductDetailModel
-    // }) => {
-    //   this.productDetail = res.data;
-    //   if (this.productDetail) {
-    //     this.setValuesForm(this.productDetail);
-    //   }
-    // });
+    const product$ = this.productService.loadProductById(productId).pipe(takeUntil(this.unsubscribe));
+    product$.subscribe((res: {
+      data: ProductModel
+    }) => {
+      this.productDetail = res.data;
+      if (this.productDetail) {
+        this.setValuesForm(this.productDetail);
+      }
+    });
   }
 
   private setValuesForm(productDetail: ProductModel) {

@@ -8,7 +8,7 @@ import {BehaviorSubject} from 'rxjs';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private user: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(null);
+  private user: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   public currentUser =  this.user.asObservable();
 
   constructor(
@@ -23,7 +23,7 @@ export class AuthenticationService {
     return this.credentialsService.getCredentials;
   }
 
-  changeCurrentUser(user: UserModel) {
+  changeCurrentUser(user: string) {
     this.user.next(user);
   }
 

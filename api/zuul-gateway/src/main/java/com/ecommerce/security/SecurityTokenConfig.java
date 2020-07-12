@@ -30,9 +30,13 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 				// authorization requests config
 				.authorizeRequests()
 				// allow all who are accessing register user
+				.antMatchers("/products/home/**").permitAll()
+				.antMatchers("/categories/**").permitAll()
+				.antMatchers("/suppliers/**").permitAll()
 				.antMatchers("/user/register/**").permitAll()
 				.antMatchers("/auth/register/**").permitAll()
 				.antMatchers("/get-current-user/**").permitAll()
+				.antMatchers("/whoiam/**").permitAll()
 				.antMatchers("/products/images/**").permitAll()
 				// allow all who are accessing "auth" service
 				.antMatchers(jwtConfig.getUri()).permitAll()

@@ -1,0 +1,13 @@
+<div class="snack-bar-container">
+  <i
+    [ngClass]="{
+      'flaticon2-cross': data.type === 'error',
+      'flaticon2-check-mark': data.type !== 'error'
+    }"
+  ></i>
+  <span
+    [innerHTML]="data.content"
+    class="snack-bar-content snack-bar-span-content"
+  ></span>
+  <em (click)="dismiss()" class="icon icon-cross snack-bar-dismiss"></em>
+</div>
