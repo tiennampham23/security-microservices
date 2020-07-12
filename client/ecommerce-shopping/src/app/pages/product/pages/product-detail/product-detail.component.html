@@ -4,7 +4,7 @@
       <div class="col-md-6 single-left">
         <div class="flexslider">
           <div class="flex-viewport" style="overflow: hidden; position: relative;">
-            <img src="{{product?.thumbnail}}" class="img-responsive w-100" style="max-height: 250px"/>
+            <img src="{{product?.thumbnail}}" class="img-responsive w-100" style="max-height: 450px"/>
           </div>
         </div>
       </div>
@@ -16,17 +16,19 @@
         </div>
         <div class="description">
           <h5>Thể loại sản phẩm</h5>
-          <p>{{getCategoryName(product.categoryId) }}</p>
+          <p class="seller-name">{{getCategoryName(product.categoryId) }}</p>
         </div>
         <div class="description">
           <h5>Nhà cung cấp</h5>
-          <p>{{ getSupplierName(product.supplierId) }}</p>
+          <p class="seller-name">{{ getSupplierName(product.supplierId) }}</p>
         </div>
         <div class="description">
           <h5>Giá thành</h5>
-          <p>{{product?.price | currency : 'VND' : '' : '1.0'}} đ</p>
+          <p class="price">{{product?.price | currency : 'VND' : '' : '1.0'}} đ</p>
         </div>
-        <button type="submit" class="btn btn-success" (click)="addProductToCart(product,1)">Thêm vào giỏ hàng</button>
+        <button type="submit" class="btn btn-success btn-cart" (click)="addProductToCart(product,1)">
+          <span class="icon-add-to-cart2x"></span> Thêm vào giỏ hàng
+        </button>
       </div>
       <div class="clearfix"> </div>
     </div>

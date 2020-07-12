@@ -11,8 +11,8 @@ import com.ecommerce.model.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
-	@Query(value = "select * from `order` where userid like %:userId% and status like %:status% and createddate <= :toDate and createddate >= :fromDate", 
-			countQuery = "select count(*) from order where userid = :userId and status = :status and createddate <= :toDate and createddate >= :fromDate", nativeQuery = true)
+	@Query(value = "select * from `order` where userid like %:userId% and status like %:status% and createddate <= :toDate and createddate >= :fromDate order by createddate desc", 
+			countQuery = "select count(*) from order where userid = :userId and status = :status and createddate <= :toDate and createddate >= :fromDate order by createddate desc", nativeQuery = true)
 	Page<Order> findAllOrdersWithPagination(Pageable pageable, @Param("userId") String userId,
 			@Param("status") String status, @Param("fromDate") String fromDate, @Param("toDate") String toDate);
 }

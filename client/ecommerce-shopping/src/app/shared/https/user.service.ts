@@ -3,7 +3,8 @@ import {BaseService} from "./base.service";
 
 
 const router = {
-  whoiam: `/whoiam`
+  whoiam: `/whoiam`,
+  register: `/user/register`,
 }
 @Injectable({
   providedIn: 'root'
@@ -16,5 +17,17 @@ export class UserService {
 
   loadCurrentUser() {
     return this.httpClient.get(router.whoiam);
+  }
+
+  register(
+    body: {
+      userName: string,
+      password: string,
+      address: string,
+      phone: string,
+      fullName: string
+    }
+  ) {
+    return this.httpClient.post(router.register, body);
   }
 }

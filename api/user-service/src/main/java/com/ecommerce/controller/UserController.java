@@ -1,17 +1,19 @@
 package com.ecommerce.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.ecommerce.dto.RegisterUserDTO;
 import com.ecommerce.model.Constants;
@@ -24,11 +26,19 @@ import com.ecommerce.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@PostMapping(value = "/register", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody ResponseDataDTO<Integer> register(@RequestBody RegisterUserDTO user) {
 		ResponseDataDTO<Integer> response = new ResponseDataDTO<>();
+		ResponseEntity<String> passwordHash = restTemplate.exchange(
+				"http://zuul-server/hash-password?password={password}", HttpMethod.GET, null, String.class,
+				user.getPassword());
+		
+		user.setPassword(passwordHash.getBody());
 
 		try {
 			int result = userService.register(user);

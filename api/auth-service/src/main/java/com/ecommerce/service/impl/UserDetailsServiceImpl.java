@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				// (i.e. "ROLE_ADMIN")
 				// So, we need to set it to that format, so we can verify and compare roles
 				// (i.e. hasRole("ADMIN")).
-				String role = roleRepository.findById(appUser.getId()).map(user -> user.getRoleName()).orElse(null);
+				String role = roleRepository.findById(appUser.getRoleId()).map(user -> user.getRoleName()).orElse(null);
 				List<GrantedAuthority> grantedAuthorities = AuthorityUtils
 						.commaSeparatedStringToAuthorityList("ROLE_" + role.toUpperCase());
 

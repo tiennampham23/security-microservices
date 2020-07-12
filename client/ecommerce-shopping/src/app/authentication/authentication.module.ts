@@ -6,11 +6,12 @@ import {AuthenticationRoutingModule} from "./authentication-routing.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {SnackbarModule} from "../shared/components/snackbar/snackbar.module";
+import { RegisterComponent } from './pages/register/register.component';
 
 
 
 @NgModule({
-  declarations: [AuthenticationComponent, LoginComponent],
+  declarations: [AuthenticationComponent, LoginComponent, RegisterComponent],
   imports: [
     CommonModule,
     AuthenticationRoutingModule,

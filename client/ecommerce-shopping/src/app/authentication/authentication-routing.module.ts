@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {AuthenticationComponent} from "./authentication.component";
 import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./pages/login/login.component";
+import {RegisterComponent} from "./pages/register/register.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
         data: {
           returnUrl: window.location.pathname
         }
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
       },
     ]
 

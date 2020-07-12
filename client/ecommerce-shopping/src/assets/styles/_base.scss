@@ -1482,7 +1482,29 @@ ul.wmuSliderPagination {
   clear: both;
   padding: 2px;
 }
-
+.btn-cart {
+  cursor: pointer;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-width: 190px;
+  width: 100%;
+  height: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  border-radius: 4px;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background-color: rgb(255, 57, 69);
+  border: none;
+}
 /* -- //timer -- */
 /*-- //banner-bottom1 --*/
 .sliderfig {

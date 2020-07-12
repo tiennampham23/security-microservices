@@ -45,7 +45,7 @@
         <h3>Thanh toán</h3>
         <div class="summary-item">
           <label class="text">Tên khách hàng:</label>
-          <p class="price">
+          <p class="username">
             {{
               currentUser
             }}
@@ -53,20 +53,20 @@
         </div>
         <div class="summary-item">
           <label class="text">Địa chỉ:</label>
-          <p class="price">
+          <p class="address">
             <input placeholder="Địa chỉ" formControlName="address" class="w-100"/>
           </p>
         </div>
         <div class="summary-item">
           <label class="text">Số điện thoại:</label>
-          <p class="price">
+          <p class="phone">
             <input placeholder="Số điện thoại" formControlName="phone" class="w-100"/>
           </p>
         </div>
         <div class="summary-item"><label class="text">Tổng tiền:</label>
-          <p class="price">${{ getTotalPrice() | decimalFormat}} đ</p>
+          <p class="price">{{ getTotalPrice() | decimalFormat}} đ</p>
         </div>
-        <button type="button" class="btn btn-primary btn-lg btn-block" (click)="checkout()">Tiến hành thanh toán</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block btn-cart" (click)="checkout()">Tiến hành thanh toán</button>
       </div>
     </div>
   </div>

@@ -36,6 +36,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/register/**").permitAll()
 				.antMatchers("/auth/register/**").permitAll()
 				.antMatchers("/get-current-user/**").permitAll()
+				.antMatchers("/hash-password/**").permitAll()
 				.antMatchers("/whoiam/**").permitAll()
 				.antMatchers("/products/images/**").permitAll()
 				// allow all who are accessing "auth" service

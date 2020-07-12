@@ -1,5 +1,36 @@
 :host {
+  .single-right {
+    margin-top: 40px;
+  }
   .additional_info_grid > img {
     max-width: 100%!important;
+  }
+
+  .seller-name {
+    color: rgb(0, 127, 240);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .price {
+    color: rgb(255, 52, 37);
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+
+
+  .icon-add-to-cart2x {
+    background: url(~src/assets/images/cart-1.png) no-repeat center ;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+  }
+
+  .description {
+    h5 {
+      margin-bottom: 10px ;
+    }
   }
 }

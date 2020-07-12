@@ -33,6 +33,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   categories: CategoryModel[];
   suppliers: SupplierModel[];
 
+  isClickCategory: boolean[] = [];
+  isClickSupplier: boolean[] = [];
+
   private destroyed$ = new Subject();
   constructor(
     private productService: ProductService,
@@ -52,7 +55,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-  loadProductsByCategory(category: CategoryModel) {
+  loadProductsByCategory(category: CategoryModel, index: number) {
+    this.isClickCategory.forEach((flag, i) => {
+      this.isClickCategory[i] = false;
+    });
+    this.isClickCategory[index] = true;
     const products$ = this.productService.loadProductByCategoryId(category.id)
       .pipe(takeUntil(this.destroyed$))
     products$.subscribe((res: ResponseHttp<ProductModel[]>) => {
@@ -61,7 +68,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
 
-  loadProductsBySupplier(supplier: SupplierModel) {
+  loadProductsBySupplier(supplier: SupplierModel, index : number) {
+    this.isClickSupplier.forEach((flag, i) => {
+      this.isClickSupplier[i] = false;
+    });
+    this.isClickSupplier[index] = true;
     const products$ = this.productService.loadProductBySupplierId(supplier.id)
       .pipe(takeUntil(this.destroyed$))
     products$.subscribe((res: ResponseHttp<ProductModel[]>) => {
@@ -83,8 +94,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$));
     categories$.subscribe((res: ResponseHttp<CategoryModel[]>) => {
       this.categories = res.data;
+      this.categories.forEach(() => {
+        this.isClickCategory.push(false);
+      });
       if (this.categories.length > 0) {
-        this.loadProductsByCategory(this.categories[0]);
+        this.loadProductsByCategory(this.categories[0], 0);
       }
     });
   }
@@ -94,8 +108,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$));
     suppliers$.subscribe((res: ResponseHttp<SupplierModel[]>) => {
       this.suppliers = res.data;
+      this.suppliers.forEach(() => {
+        this.isClickSupplier.push(false);
+      });
       if (this.suppliers.length > 0) {
-        this.loadProductsBySupplier(this.suppliers[0]);
+        this.loadProductsBySupplier(this.suppliers[0], 0);
       }
     });
   }

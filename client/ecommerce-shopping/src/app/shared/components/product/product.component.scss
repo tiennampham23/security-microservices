@@ -1,52 +1,60 @@
-.agileinfo_new_products_grid {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  -webkit-box-align: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(255, 255, 255);
-  padding: 16px;
-
-  .product__title {
+:host {
+  .agileinfo_new_products_grid {
     position: relative;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    max-height: 40px;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
     width: 100%;
-    color: rgb(36, 36, 36);
-    font-size: 13px;
-    font-weight: 300;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.54;
-    letter-spacing: 0.1px;
-    text-align: left;
-    text-overflow: ellipsis;
-    margin: 0px;
-    overflow: hidden;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    padding: 16px;
+
+    .product__title {
+      position: relative;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      max-height: 40px;
+      width: 100%;
+      color: rgb(36, 36, 36);
+      font-size: 13px;
+      font-weight: 300;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.54;
+      letter-spacing: 0.1px;
+      text-align: left;
+      text-overflow: ellipsis;
+      margin: 0px;
+      overflow: hidden;
+    }
+
+    .product__price {
+      align-self: stretch;
+      color: rgb(36, 36, 36);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.6;
+      margin: 0px;
+      padding: 8px 0px 0px;
+    }
+
+    &:hover {
+      box-shadow: 0px 0px 5px 6px rgba(196,192,196,0.41);
+      z-index: 9999;
+      cursor: pointer;
+    }
+  }
+  .img-product {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    margin-bottom: 12px;
   }
 
-  .product__price {
-    align-self: stretch;
-    color: rgb(36, 36, 36);
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.6;
-    margin: 0px;
-    padding: 8px 0px 0px;
+  .hs-wrapper.hs-wrapper1 {
+    display: flex;
+    justify-content: center;
   }
-
-  &:hover {
-    box-shadow: 0px 0px 5px 6px rgba(196,192,196,0.41);
-    z-index: 9999;
-  }
-}
-.img-product {
-  width: 200px;
-  height: 200px;
-  text-align: center;
-  margin-bottom: 12px;
 }
