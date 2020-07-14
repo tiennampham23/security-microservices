@@ -15,4 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			countQuery = "select count(*) from order where userid = :userId and status = :status and createddate <= :toDate and createddate >= :fromDate order by createddate desc", nativeQuery = true)
 	Page<Order> findAllOrdersWithPagination(Pageable pageable, @Param("userId") String userId,
 			@Param("status") String status, @Param("fromDate") String fromDate, @Param("toDate") String toDate);
+	
+	@Query(value="select count(*) from `order` where status like %:statusName%", nativeQuery = true)
+	int getTotalOrdersByStatus(@Param("statusName")String statusName);
 }

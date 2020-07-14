@@ -64,6 +64,23 @@ public class OrderController {
 		}
 		return response;
 	}
+	
+	@GetMapping(value = "/total-orders-by-status", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public @ResponseBody ResponseDataDTO<Integer> getTotalOrdersByStatus(String orderStatus) {
+		ResponseDataDTO<Integer> response = new ResponseDataDTO<>();
+		try {
+			int result = orderService.getTotalItemsByStatus(orderStatus);
+			response.setData(result);
+			response.setCode(Constants.SUCCESS_CODE);
+			response.setMessage(Constants.SUCCESS_MSG);
+		} catch (Exception e) {
+			response.setData(null);
+			response.setCode(Constants.ERR_CODE_BAD_REQUEST);
+			response.setMessage(Constants.MSG_TEMP + Constants.ERR_MSG_BAD_REQUEST);
+			e.printStackTrace();
+		}
+		return response;
+	}
 
 	@GetMapping(value = "/page", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody ResponseDataDTO<Page<Order>> getPageableProduct(Pageable pageable, String userId,

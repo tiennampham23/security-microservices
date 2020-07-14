@@ -23,4 +23,6 @@ public interface OrderService {
 	Optional<Order> getOrderById(int id);
 
 	List<OrderDetail> getOrderDetails(int id);
+
+	int getTotalItemsByStatus(String orderStatus);
 }

@@ -110,4 +110,9 @@ public class OrderServiceImpl implements OrderService {
 		return this.orderDetailRepository.getOrderDetails(id);
 	}
 
+	@Override
+	public int getTotalItemsByStatus(String orderStatus) {
+		return this.orderRepository.getTotalOrdersByStatus(orderStatus);
+	}
+
 }
