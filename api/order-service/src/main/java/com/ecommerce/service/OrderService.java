@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.ecommerce.dto.ChangeStatusDTO;
+import com.ecommerce.dto.DataSourceDTO;
 import com.ecommerce.dto.OrderDTO;
 import com.ecommerce.model.Order;
 import com.ecommerce.model.OrderDetail;
@@ -25,4 +26,7 @@ public interface OrderService {
 	List<OrderDetail> getOrderDetails(int id);
 
 	int getTotalItemsByStatus(String orderStatus);
+	
+	
+	DataSourceDTO getChartByTime(String startDate, String toDate); 
 }

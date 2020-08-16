@@ -1,5 +1,7 @@
 package com.ecommerce.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +20,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
 	@Query(value="select count(*) from `order` where status like %:statusName%", nativeQuery = true)
 	int getTotalOrdersByStatus(@Param("statusName")String statusName);
+	
+	
+	@Query(value = "select * from `order` where userid createddate <= :toDate and createddate >= :fromDate order by createddate asc", nativeQuery = true)
+	List<Order> getOrdersByTime(@Param("fromDate") String fromDate, @Param("toDate") String toDat);
 }

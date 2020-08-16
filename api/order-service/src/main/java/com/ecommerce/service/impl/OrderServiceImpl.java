@@ -1,6 +1,7 @@
 package com.ecommerce.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,8 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.dto.ChangeStatusDTO;
+import com.ecommerce.dto.DataSourceDTO;
 import com.ecommerce.dto.OrderDTO;
 import com.ecommerce.dto.OrderProductDTO;
+import com.ecommerce.dto.SeriesDTO;
 import com.ecommerce.model.Order;
 import com.ecommerce.model.OrderDetail;
 import com.ecommerce.model.Status;
@@ -113,6 +116,26 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int getTotalItemsByStatus(String orderStatus) {
 		return this.orderRepository.getTotalOrdersByStatus(orderStatus);
+	}
+
+	@Override
+	public DataSourceDTO getChartByTime(String startDate, String toDate) {
+		String title = "Biểu đồ đặt hàng từ ngày " + startDate + " đến " + toDate;
+		DataSourceDTO dataSource = new DataSourceDTO(title);
+		List<Order> orders = this.orderRepository.getOrdersByTime(startDate, toDate);
+		
+		List<String> labels = new ArrayList<String>();
+		List<SeriesDTO> series = new ArrayList<SeriesDTO>();
+		for (Order order : orders) {
+//			Ser
+//			labels.add(order.getCreatedDate().toString());
+		}
+		
+		dataSource.setLabels(labels);
+		
+		
+		// TODO Auto-generated method stub
+		return dataSource;
 	}
 
 }
